@@ -1,0 +1,3256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>MonDjai/Salon H</title>
+<meta name="description" content="Le carnet de recettes et de charges du coiffeur, en quelques secondes entre deux clients.">
+<meta name="theme-color" content="#11141a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Salon H">
+<style>
+  :root{
+    --bg:#11141a;
+    --bg-card:#1a1f29;
+    --bg-card-2:#20263380;
+    --bg-input:#141924;
+    --text:#f5f6f8;
+    --text-dim:#9aa3b2;
+    --text-dim-2:#6b7385;
+    --accent:#f5a623;
+    --accent-dark:#c9840f;
+    --accent-ink:#241a06;
+    --success:#34b37e;
+    --danger:#ff6b5e;
+    --border:#2a3040;
+    --radius:18px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+    overscroll-behavior-y:none;
+  }
+  #app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 172px) 16px;
+    position:relative;
+  }
+  h1,h2,h3,p{margin:0;}
+  button{font-family:inherit;}
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .brand-mark{
+    width:38px;height:38px;border-radius:11px;
+    background:linear-gradient(145deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:18px;color:var(--accent-ink);
+    flex:none;
+  }
+  .brand-name{font-size:16px;font-weight:700;letter-spacing:.2px;}
+  .brand-sub{font-size:12px;color:var(--text-dim);margin-top:1px;}
+
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+  }
+  .muted{color:var(--text-dim);font-size:13px;line-height:1.5;}
+  .title-lg{font-size:22px;font-weight:800;margin-bottom:6px;}
+  .title-md{font-size:17px;font-weight:700;margin-bottom:4px;}
+  .step-label{
+    font-size:12px;
+    color:var(--accent);
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+
+  .choice-list{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .choice{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    background:var(--bg-input);
+    border:2px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:14px;
+    cursor:pointer;
+    text-align:left;
+    color:var(--text);
+    width:100%;
+  }
+  .choice.selected{
+    border-color:var(--accent);
+    background:linear-gradient(0deg,#20180a,#20180a),var(--bg-input);
+  }
+  .choice-dot{
+    width:20px;height:20px;border-radius:50%;
+    border:2px solid var(--text-dim-2);
+    flex:none;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .choice.selected .choice-dot{border-color:var(--accent);}
+  .choice.selected .choice-dot::after{
+    content:"";width:10px;height:10px;border-radius:50%;background:var(--accent);
+  }
+  .choice-txt strong{display:block;font-size:15px;margin-bottom:2px;}
+  .choice-txt span{font-size:13px;color:var(--text-dim);}
+
+  .field{margin-top:14px;}
+  .field label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;}
+  .field input[type=text],
+  .field input[type=tel],
+  .field input[type=number]{
+    width:100%;
+    background:var(--bg-input);
+    border:2px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:14px;
+    font-size:17px;
+    color:var(--text);
+    outline:none;
+  }
+  .field input:focus{border-color:var(--accent);}
+  .amount-field{position:relative;}
+  .amount-field input{padding-right:44px !important;font-weight:700;font-size:20px !important;}
+  .amount-suffix{
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    color:var(--text-dim);font-weight:700;font-size:15px;
+    pointer-events:none;
+  }
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;
+    border:none;
+    border-radius:var(--radius-sm);
+    padding:15px 18px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-primary:disabled{opacity:.4;}
+  .btn-secondary{background:var(--bg-input);color:var(--text);border:1px solid var(--border);}
+  .btn-ghost{background:transparent;color:var(--text-dim);}
+  .btn-danger-outline{background:transparent;color:var(--danger);border:1px solid #4a2b28;}
+  .btn-row{display:flex;gap:10px;margin-top:16px;}
+  .btn-row .btn{flex:1;}
+
+  .rubrique-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:14px;
+  }
+  .rubrique-item{
+    position:relative;
+    background:var(--bg-input);
+    border:2px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:12px 8px 10px 8px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    cursor:pointer;
+    color:var(--text);
+    text-align:center;
+  }
+  .rubrique-item.selected{border-color:var(--accent);}
+  .rubrique-icon{
+    width:40px;height:40px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+  }
+  .rubrique-nom{font-size:11.5px;line-height:1.25;color:var(--text-dim);}
+  .rubrique-item.selected .rubrique-nom{color:var(--text);}
+  .rubrique-check{
+    position:absolute;top:6px;right:6px;
+    width:18px;height:18px;border-radius:50%;
+    border:2px solid var(--text-dim-2);
+    background:var(--bg-input);
+  }
+  .rubrique-item.selected .rubrique-check{
+    border-color:var(--accent);background:var(--accent);
+  }
+  .rubrique-item.selected .rubrique-check::after{
+    content:"✓";display:block;font-size:11px;line-height:14px;color:var(--accent-ink);font-weight:900;
+  }
+  .rubrique-item.perso-tag::before{
+    content:"perso";
+    position:absolute;top:-7px;left:8px;
+    background:var(--accent-dark);
+    color:#fff;
+    font-size:8.5px;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:2px 6px;
+    border-radius:20px;
+  }
+
+  .soft-msg{
+    margin-top:12px;
+    background:#241d0e;
+    border:1px solid #4a3a12;
+    color:#e8c77a;
+    font-size:12.5px;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    line-height:1.4;
+  }
+
+  .add-rubrique-btn{
+    margin-top:14px;
+    width:100%;
+    border:2px dashed var(--border);
+    background:transparent;
+    color:var(--text-dim);
+    border-radius:var(--radius-sm);
+    padding:13px;
+    font-size:14px;
+    font-weight:600;
+  }
+
+  .custom-form{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+  .emoji-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .emoji-choice{
+    width:42px;height:42px;border-radius:11px;
+    background:var(--bg-input);border:2px solid var(--border);
+    font-size:19px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text);
+  }
+  .emoji-choice.selected{border-color:var(--accent);}
+  .color-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center;}
+  .color-choice{
+    width:30px;height:30px;border-radius:50%;
+    border:2px solid transparent;
+    cursor:pointer;
+  }
+  .color-choice.selected{border-color:#fff;}
+
+  /* Ecran du jour */
+  .solde-card{
+    text-align:center;
+    padding:26px 18px 22px 18px;
+  }
+  .solde-label{font-size:13px;color:var(--text-dim);font-weight:600;margin-bottom:8px;}
+  .solde-value{
+    font-size:clamp(2.1rem,10vw,2.7rem);
+    font-weight:800;
+    line-height:1.1;
+    word-break:break-word;
+  }
+  .solde-value.positif{color:var(--success);}
+  .solde-value.perte{color:var(--danger);}
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+  }
+  .stat-box{
+    flex:1;
+    background:var(--bg-input);
+    border-radius:var(--radius-sm);
+    padding:12px;
+    text-align:center;
+  }
+  .stat-box .stat-num{font-size:17px;font-weight:800;}
+  .stat-box .stat-label{font-size:11px;color:var(--text-dim);margin-top:2px;}
+
+  .client-btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;
+    background:linear-gradient(145deg,var(--accent),var(--accent-dark));
+    color:var(--accent-ink);
+    border:none;
+    border-radius:var(--radius);
+    padding:18px;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    margin-bottom:14px;
+  }
+  .client-btn .plus-circle{
+    width:26px;height:26px;border-radius:50%;
+    background:rgba(0,0,0,.18);
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:900;
+  }
+
+  .section-title{
+    font-size:13px;font-weight:700;color:var(--text-dim);
+    text-transform:uppercase;letter-spacing:.05em;
+    margin:4px 0 10px 2px;
+  }
+  .charge-list{display:flex;flex-direction:column;gap:8px;}
+  .charge-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--bg-input);
+    border-radius:var(--radius-sm);
+    padding:11px 13px;
+  }
+  .charge-icon{
+    width:36px;height:36px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;flex:none;
+  }
+  .charge-info{flex:1;min-width:0;}
+  .charge-nom{font-size:14px;font-weight:600;}
+  .charge-heure{font-size:11.5px;color:var(--text-dim);}
+  .charge-montant{font-size:15px;font-weight:700;color:var(--danger);white-space:nowrap;}
+  .empty-note{
+    color:var(--text-dim-2);
+    font-size:13px;
+    text-align:center;
+    padding:18px 10px;
+  }
+
+  .fab{
+    position:fixed;
+    right:calc(50% - 240px + 18px);
+    bottom:calc(env(safe-area-inset-bottom) + 96px);
+    width:60px;height:60px;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:none;
+    font-size:28px;
+    font-weight:800;
+    box-shadow:0 6px 18px rgba(245,166,35,.35);
+    cursor:pointer;
+    z-index:20;
+  }
+  @media (max-width:516px){
+    .fab{right:22px;}
+  }
+
+  /* Modales */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(6,7,10,.68);
+    display:flex;align-items:flex-end;justify-content:center;
+    z-index:50;
+  }
+  .sheet{
+    width:100%;
+    max-width:480px;
+    background:var(--bg-card);
+    border-radius:22px 22px 0 0;
+    padding:20px 18px calc(env(safe-area-inset-bottom) + 20px) 18px;
+    max-height:88vh;
+    overflow-y:auto;
+    border-top:1px solid var(--border);
+    animation:slideup .18s ease-out;
+  }
+  @keyframes slideup{
+    from{transform:translateY(24px);opacity:0;}
+    to{transform:translateY(0);opacity:1;}
+  }
+  .sheet-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .sheet-title{font-size:16px;font-weight:800;}
+  .sheet-close{
+    background:var(--bg-input);
+    border:none;color:var(--text-dim);
+    width:32px;height:32px;border-radius:50%;
+    font-size:16px;cursor:pointer;
+  }
+  .modal-rubrique-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:10px;
+  }
+  .modal-rubrique-item{
+    background:var(--bg-input);
+    border:2px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:10px 4px;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+    cursor:pointer;color:var(--text);
+  }
+  .modal-rubrique-icon{
+    width:36px;height:36px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .modal-rubrique-nom{font-size:10px;text-align:center;color:var(--text-dim);line-height:1.2;}
+  .selected-rubrique-preview{
+    display:flex;align-items:center;gap:10px;
+    background:var(--bg-input);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    margin-bottom:14px;
+  }
+  .selected-rubrique-preview .charge-icon{width:34px;height:34px;font-size:16px;}
+  .back-link{
+    background:none;border:none;color:var(--text-dim);
+    font-size:13px;padding:0 0 12px 0;cursor:pointer;
+    display:flex;align-items:center;gap:4px;
+  }
+
+  /* Navigation basse */
+  .navbar{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:0;
+    width:100%;
+    max-width:480px;
+    display:flex;
+    background:var(--bg-card);
+    border-top:1px solid var(--border);
+    padding:8px 6px calc(env(safe-area-inset-bottom) + 8px) 6px;
+    z-index:15;
+  }
+  .navbtn{
+    flex:1;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    background:transparent;border:none;color:var(--text-dim);
+    padding:6px 2px;border-radius:12px;cursor:pointer;
+  }
+  .navbtn.active{color:var(--accent);}
+  .navicon{font-size:19px;position:relative;display:inline-block;}
+  .navlabel{font-size:10px;font-weight:700;}
+  .navdot{
+    position:absolute;top:-2px;right:-7px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--danger);
+    border:1.5px solid var(--bg-card);
+  }
+
+  /* Badge créances sur le tableau de bord */
+  .badge-chip{
+    display:inline-flex;align-items:center;gap:7px;
+    background:#2a1f0e;border:none;color:#f0c775;
+    font-size:12.5px;font-weight:700;
+    padding:9px 14px;border-radius:999px;
+    margin-top:14px;
+    cursor:pointer;
+  }
+  .badge-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--danger);flex:none;}
+
+  /* Créances */
+  .creance-list{display:flex;flex-direction:column;gap:8px;}
+  .creance-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--bg-input);
+    border-radius:var(--radius-sm);
+    padding:12px 13px;
+  }
+  .creance-info{flex:1;min-width:0;}
+  .creance-nom{font-size:14.5px;font-weight:700;}
+  .creance-date{font-size:11.5px;color:var(--text-dim);margin-top:1px;}
+  .creance-montant{font-size:15px;font-weight:800;color:var(--accent);white-space:nowrap;margin-right:2px;}
+  .creance-actions{display:flex;flex-direction:column;gap:6px;align-items:stretch;flex:none;}
+  .btn-sm{
+    border:none;border-radius:9px;
+    padding:7px 11px;font-size:11.5px;font-weight:700;cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn-sm-payer{background:var(--success);color:#08241a;}
+  .btn-sm-annuler{background:transparent;color:var(--text-dim-2);border:1px solid var(--border);}
+  .creance-row.payee{opacity:.65;}
+  .creance-row.payee .creance-montant{color:var(--success);}
+  .creance-tag-payee{
+    font-size:10.5px;font-weight:800;color:var(--success);
+    background:#0f2a20;padding:3px 8px;border-radius:999px;
+  }
+
+  /* Mon état */
+  .etat-tabs{display:flex;gap:8px;margin-bottom:14px;}
+  .etat-tab{
+    flex:1;background:var(--bg-input);border:2px solid var(--border);
+    color:var(--text-dim);border-radius:var(--radius-sm);
+    padding:10px;font-size:13.5px;font-weight:700;cursor:pointer;
+  }
+  .etat-tab.active{border-color:var(--accent);color:var(--text);}
+  .etat-period-nav{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:8px;margin-bottom:14px;
+  }
+  .etat-period-nav button{
+    background:var(--bg-input);border:1px solid var(--border);color:var(--text);
+    width:36px;height:36px;border-radius:50%;font-size:15px;cursor:pointer;flex:none;
+  }
+  .etat-period-nav button:disabled{opacity:.3;cursor:default;}
+  .etat-period-label{font-size:14px;font-weight:700;text-align:center;flex:1;}
+  .etat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .etat-stat{background:var(--bg-input);border-radius:var(--radius-sm);padding:14px 12px;}
+  .etat-stat .num{font-size:18px;font-weight:800;}
+  .etat-stat .num.positif{color:var(--success);}
+  .etat-stat .num.perte{color:var(--danger);}
+  .etat-stat .label{font-size:11px;color:var(--text-dim);margin-top:3px;}
+  .rubrique-stat-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--bg-input);border-radius:var(--radius-sm);
+    padding:10px 13px;
+  }
+  .rubrique-stat-row .charge-icon{width:32px;height:32px;font-size:15px;flex:none;}
+  .rubrique-stat-nom{flex:1;font-size:13.5px;min-width:0;}
+  .rubrique-stat-montant{font-size:14px;font-weight:700;color:var(--danger);white-space:nowrap;}
+
+  /* Historique */
+  .hist-list{display:flex;flex-direction:column;gap:8px;}
+  .hist-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:var(--bg-input);border-radius:var(--radius-sm);
+    padding:13px;cursor:pointer;color:var(--text);border:none;width:100%;text-align:left;
+  }
+  .hist-date{font-size:14px;font-weight:700;}
+  .hist-sub{font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+  .hist-solde{font-size:15px;font-weight:800;white-space:nowrap;}
+  .hist-solde.positif{color:var(--success);}
+  .hist-solde.perte{color:var(--danger);}
+  .readonly-tag{
+    display:inline-block;background:var(--bg-input);color:var(--text-dim);
+    font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;
+    margin-bottom:14px;
+  }
+
+  /* En-tête : accès Mes données (F10) */
+  .brand-info{flex:1;min-width:0;}
+  .brand-action{
+    flex:none;
+    width:36px;height:36px;border-radius:50%;
+    background:var(--bg-card);border:1px solid var(--border);
+    color:var(--text-dim);font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+
+  /* Rappel doux de sauvegarde */
+  .rappel-sauvegarde{margin-bottom:14px;}
+
+  /* Mes données (F10) */
+  .backup-info{
+    margin-top:12px;
+    background:var(--bg-input);
+    border-radius:var(--radius-sm);
+    padding:11px 13px;
+    font-size:13px;
+    color:var(--text-dim);
+  }
+  .backup-info strong{color:var(--text);}
+  input[type=file]{width:0.1px;height:0.1px;opacity:0;overflow:hidden;position:absolute;}
+
+  /* Jauge de progression (F8) */
+  .jauge-track{
+    height:10px;border-radius:999px;
+    background:var(--bg-input);overflow:hidden;
+  }
+  .jauge-fill{
+    height:100%;border-radius:999px;
+    background:linear-gradient(90deg,var(--accent-dark),var(--accent));
+  }
+  .jauge-label{font-size:12px;color:var(--text-dim);margin-top:7px;}
+  .jauge-wrap{margin-top:14px;}
+
+  /* Tableau de bord : mini-jauge de l'objectif actif */
+  .objectif-mini{
+    display:block;width:100%;text-align:left;
+    font:inherit;color:var(--text);cursor:pointer;
+  }
+  .objectif-mini-head{
+    display:flex;align-items:center;gap:9px;
+    margin-bottom:9px;
+  }
+  .objectif-mini-nom{flex:1;font-size:13.5px;font-weight:700;min-width:0;}
+  .objectif-mini-pct{font-size:13px;font-weight:800;color:var(--accent);}
+  .modele-icon-sm{font-size:18px;flex:none;}
+
+  /* Mon objectif : modèles */
+  .modele-list{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .modele-card{
+    display:flex;align-items:flex-start;gap:12px;
+    background:var(--bg-input);border:2px solid var(--border);
+    border-radius:var(--radius-sm);padding:14px;
+    cursor:pointer;text-align:left;color:var(--text);width:100%;
+  }
+  .modele-icon{
+    width:38px;height:38px;border-radius:11px;flex:none;
+    background:var(--accent-ink);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:19px;
+  }
+  .modele-txt{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .modele-txt strong{font-size:14.5px;}
+  .modele-txt span{font-size:12.5px;color:var(--text-dim);line-height:1.4;}
+  .modele-montant{color:var(--accent) !important;font-weight:700;}
+
+  /* Mon objectif : scénarios */
+  .scenario-list{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .scenario-card{
+    background:var(--bg-input);border:2px solid var(--border);
+    border-radius:var(--radius-sm);padding:13px 14px;
+    cursor:pointer;text-align:left;color:var(--text);width:100%;
+  }
+  .scenario-card.selected{border-color:var(--accent);}
+  .scenario-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .scenario-head strong{font-size:14.5px;}
+  .scenario-pct{
+    font-size:12px;font-weight:800;color:var(--accent);
+    background:var(--accent-ink);padding:2px 9px;border-radius:999px;
+  }
+  .scenario-detail{font-size:12.5px;color:var(--text-dim);}
+
+  /* En-tête : accès Réglages (F11) et Partager (F9) */
+  .brand-actions{display:flex;gap:8px;flex:none;}
+
+  /* Écran de verrouillage (PIN, F11) */
+  .pin-screen{
+    min-height:calc(100vh - 40px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:6px;padding:20px 0;
+  }
+  .pin-titre{font-size:18px;font-weight:800;margin-top:18px;}
+  .pin-sous-titre{font-size:13px;color:var(--text-dim);margin-top:4px;margin-bottom:8px;}
+  .pin-dots{display:flex;gap:14px;margin:22px 0 26px 0;}
+  .pin-dot{
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid var(--text-dim-2);background:transparent;
+  }
+  .pin-dot.rempli{background:var(--accent);border-color:var(--accent);}
+  .pin-screen.pin-erreur .pin-dot{border-color:var(--danger);}
+  .pin-screen.pin-erreur .pin-dot.rempli{background:var(--danger);}
+  .pin-erreur-msg{color:var(--danger);font-size:12.5px;font-weight:600;height:16px;margin-bottom:6px;}
+  .pin-keypad{
+    display:grid;grid-template-columns:repeat(3,64px);gap:14px;
+    justify-content:center;
+  }
+  .pin-key{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--bg-input);border:1px solid var(--border);color:var(--text);
+    font-size:22px;font-weight:700;cursor:pointer;
+  }
+  .pin-key.pin-key-vide{background:transparent;border:none;cursor:default;}
+  .pin-key.pin-key-effacer{font-size:18px;color:var(--text-dim);}
+  .pin-oublie{margin-top:24px;background:none;border:none;color:var(--text-dim);font-size:13px;text-decoration:underline;cursor:pointer;}
+
+  /* Réglages (F11) */
+  .settings-section-title{
+    font-size:12.5px;font-weight:800;color:var(--text-dim);
+    text-transform:uppercase;letter-spacing:.05em;
+    margin:20px 2px 10px 2px;
+  }
+  .settings-section-title:first-of-type{margin-top:4px;}
+  .settings-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:13px 2px;border-bottom:1px solid var(--border);
+  }
+  .settings-row:last-child{border-bottom:none;}
+  .settings-row-txt{min-width:0;}
+  .settings-row-label{font-size:14.5px;font-weight:600;}
+  .settings-row-val{font-size:12.5px;color:var(--text-dim);margin-top:2px;}
+  .settings-pill{
+    border:none;border-radius:999px;padding:7px 14px;
+    font-size:12.5px;font-weight:700;cursor:pointer;flex:none;
+  }
+  .settings-pill.on{background:var(--success);color:#08241a;}
+  .settings-pill.off{background:var(--bg-input);color:var(--text-dim);border:1px solid var(--border);}
+  .settings-link-row{
+    display:flex;align-items:center;justify-content:space-between;
+    width:100%;background:none;border:none;color:var(--text);
+    padding:13px 2px;font-size:14.5px;font-weight:600;cursor:pointer;text-align:left;
+  }
+  .settings-chevron{color:var(--text-dim-2);font-size:15px;}
+
+  /* Partager (F9) */
+  .partage-preview-wrap{
+    display:flex;justify-content:center;margin:6px 0 16px 0;
+  }
+  .partage-canvas{
+    width:100%;max-width:340px;border-radius:var(--radius);
+    border:1px solid var(--border);display:block;
+  }
+
+  /* À propos */
+  .about-mark{
+    width:56px;height:56px;border-radius:16px;margin:6px auto 14px auto;
+    background:linear-gradient(145deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:26px;color:var(--accent-ink);
+  }
+  .about-mission{
+    font-size:16px;font-weight:700;line-height:1.5;text-align:center;
+    margin-bottom:10px;
+  }
+  .about-tagline{
+    text-align:center;color:var(--accent);font-weight:700;font-size:13.5px;
+    margin-bottom:18px;
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "salonh_state_v1";
+
+  var RUBRIQUES_PRECONFIGUREES = [
+    { id:"cotisation",   nom:"Cotisation / loyer de place",              icone:"🔑", couleur:"#f5a623", defautLocataire:true },
+    { id:"consommables", nom:"Produits consommables (gel, mousse, lotion)", icone:"🧴", couleur:"#34b37e", defaut:true },
+    { id:"entretien",    nom:"Entretien matériel (tondeuse, rasoir, ciseaux)", icone:"🔧", couleur:"#5b8def", defaut:true },
+    { id:"electricite",  nom:"Électricité",                              icone:"💡", couleur:"#e8c94a", defaut:false },
+    { id:"transport",    nom:"Transport (prestations à domicile)",       icone:"🛵", couleur:"#4fd1c5", defaut:false }
+  ];
+
+  var EMOJI_SUGGESTIONS = ["💈","✂️","🪒","🧢","🧼","🚿","📦","🧾","🛠️","🧹","🧺","☕"];
+  var COULEUR_SUGGESTIONS = ["#f5a623","#34b37e","#5b8def","#e8c94a","#4fd1c5","#ff6b5e","#b478e0","#8a94a6"];
+
+  var MAX_RUBRIQUES_CONSEILLE = 8;
+
+  // Modèles pré-configurés pour « Mon objectif » (F8). Le montant est une
+  // suggestion : toujours modifiable par l'utilisateur avant de créer l'objectif.
+  var OBJECTIF_MODELES = [
+    { id:"tondeuse", nom:"Tondeuse professionnelle", icone:"✂️",
+      description:"Une tondeuse de qualité pro, pour couper plus vite et plus net.",
+      montantSuggere:45000 },
+    { id:"kit_installation", nom:"Kit d’installation indépendant", icone:"🧰",
+      description:"Tondeuse, rasoir, ciseaux, cape, miroir : de quoi travailler seul, à domicile ou ailleurs.",
+      montantSuggere:150000 },
+    { id:"place_fixe", nom:"Place fixe / mini-salon", icone:"🏠",
+      description:"De quoi payer l’installation d’une place fixe ou démarrer un petit salon.",
+      montantSuggere:500000 }
+  ];
+
+  // Scénarios fixes du simulateur « 3 façons d'y arriver » (F8).
+  var SCENARIOS_OBJECTIF = [
+    { pourcentage:10, nom:"Tranquille" },
+    { pourcentage:20, nom:"Équilibré" },
+    { pourcentage:30, nom:"Ambitieux" }
+  ];
+
+  // Moyenne calculée sur les 4 dernières semaines réellement saisies
+  // (semaines avec au moins un jour de données, pas des semaines calendaires vides).
+  var NB_SEMAINES_MOYENNE = 4;
+
+  // Rappel doux de sauvegarde (F10) au-delà de ce nombre de jours.
+  var RAPPEL_SAUVEGARDE_JOURS = 7;
+
+  // ---------- Etat ----------
+
+  function defaultState(){
+    return {
+      version: 1,
+      config: {
+        statut: null,               // 'salarie' | 'locataire' | 'independant'
+        cotisationHabituelle: null,
+        rubriques: [],              // {id, nom, icone, couleur, actif, perso}
+        onboardingComplete: false,
+        pinActif: false,            // F11 : code PIN optionnel à l'ouverture
+        pin: null                   // chaîne de 4 chiffres, ou null
+      },
+      jours: {},                    // 'AAAA-MM-JJ' -> { date, origine, recette, clients:[], charges:[], creancesRecouvrees:[] }
+      dernierMontant: {},           // { rubriqueId: montant }
+      creances: [],                 // [{id, nom, montant, date, statut:'en_cours'|'payee', ts, datePaiement, tsPaiement}]
+      objectif: null,               // {id, modele, sousType, nom, montantCible, dateCreation, pourcentage, actif} | null (F8)
+      meta: {                       // F10 : suivi de la sauvegarde JSON, pour le rappel doux
+        derniereSauvegarde: null,       // 'AAAA-MM-JJ' | null
+        dernierRappelSauvegarde: null   // 'AAAA-MM-JJ' | null
+      }
+    };
+  }
+
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      var base = defaultState();
+      return {
+        version: 1,
+        config: Object.assign({}, base.config, parsed.config || {}),
+        jours: parsed.jours || {},
+        dernierMontant: parsed.dernierMontant || {},
+        creances: parsed.creances || [],
+        objectif: parsed.objectif || null,
+        meta: Object.assign({}, base.meta, parsed.meta || {})
+      };
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }catch(e){
+      // stockage indisponible : on continue sans bloquer l'utilisateur
+    }
+  }
+
+  // ---------- Utilitaires ----------
+
+  function pad2(n){ return n < 10 ? "0" + n : "" + n; }
+
+  function todayKey(){
+    var d = new Date();
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  }
+
+  function todayLabel(){
+    var d = new Date();
+    try{
+      var s = new Intl.DateTimeFormat("fr-FR", { weekday:"long", day:"numeric", month:"long" }).format(d);
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }catch(e){
+      return todayKey();
+    }
+  }
+
+  function formatFCFA(n){
+    var val = Math.round(Number(n) || 0);
+    var sign = val < 0 ? "-" : "";
+    var abs = Math.abs(val);
+    var str = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return sign + str + " F";
+  }
+
+  function uid(prefix){
+    return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+  }
+
+  function ensureJour(){
+    var key = todayKey();
+    if(!state.jours[key]){
+      state.jours[key] = {
+        date: key,
+        origine: "salon-h",
+        recette: 0,
+        clients: [],
+        charges: [],
+        creancesRecouvrees: []
+      };
+    }
+    return state.jours[key];
+  }
+
+  // Jours antérieurs au Sprint 2 : le tableau des créances recouvrées n'existe pas encore.
+  function creancesRecouvreesDe(jour){
+    return (jour && jour.creancesRecouvrees) || [];
+  }
+
+  function rubriquesActives(){
+    return state.config.rubriques.filter(function(r){ return r.actif; });
+  }
+
+  function findRubrique(id){
+    for(var i=0;i<state.config.rubriques.length;i++){
+      if(state.config.rubriques[i].id === id) return state.config.rubriques[i];
+    }
+    return null;
+  }
+
+  function findChargeDuJour(jour, id){
+    for(var i=0;i<jour.charges.length;i++){
+      if(jour.charges[i].id === id) return jour.charges[i];
+    }
+    return null;
+  }
+
+  function findCreance(id){
+    for(var i=0;i<state.creances.length;i++){
+      if(state.creances[i].id === id) return state.creances[i];
+    }
+    return null;
+  }
+
+  function creancesEnCours(){
+    return state.creances.filter(function(c){ return c.statut === "en_cours"; });
+  }
+
+  function sommeCreancesEnCours(){
+    return creancesEnCours().reduce(function(s,c){ return s + c.montant; }, 0);
+  }
+
+  // ---------- Dates ----------
+
+  function parseDateKey(key){
+    var parts = String(key).split("-").map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function dateToKey(d){
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  }
+
+  function joursDepuis(key){
+    var d = parseDateKey(key);
+    var now = new Date();
+    var todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.floor((todayMidnight - d) / 86400000);
+  }
+
+  function formatDateLabel(key){
+    var d = parseDateKey(key);
+    try{
+      var s = new Intl.DateTimeFormat("fr-FR", { weekday:"long", day:"numeric", month:"long", year:"numeric" }).format(d);
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }catch(e){
+      return key;
+    }
+  }
+
+  function formatDateCourte(key){
+    var d = parseDateKey(key);
+    try{
+      return new Intl.DateTimeFormat("fr-FR", { day:"numeric", month:"short" }).format(d);
+    }catch(e){
+      return key;
+    }
+  }
+
+  function lundiDeLaSemaine(d){
+    var day = d.getDay(); // 0=dimanche .. 6=samedi
+    var diff = (day === 0 ? -6 : 1 - day);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+  }
+
+  function bornesPeriode(mode, offset){
+    var today = new Date();
+    if(mode === "mois"){
+      var refMois = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+      var debut = new Date(refMois.getFullYear(), refMois.getMonth(), 1);
+      var fin = new Date(refMois.getFullYear(), refMois.getMonth() + 1, 0);
+      return { debut: debut, fin: fin };
+    }
+    var refSemaine = new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset * 7);
+    var lundi = lundiDeLaSemaine(refSemaine);
+    var dimanche = new Date(lundi.getFullYear(), lundi.getMonth(), lundi.getDate() + 6);
+    return { debut: lundi, fin: dimanche };
+  }
+
+  function labelPeriode(mode, offset){
+    var b = bornesPeriode(mode, offset);
+    if(mode === "mois"){
+      try{
+        var s = new Intl.DateTimeFormat("fr-FR", { month:"long", year:"numeric" }).format(b.debut);
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }catch(e){
+        return dateToKey(b.debut).slice(0,7);
+      }
+    }
+    return "Semaine du " + formatDateCourte(dateToKey(b.debut)) + " au " + formatDateCourte(dateToKey(b.fin));
+  }
+
+  function calculerEtat(mode, offset){
+    var b = bornesPeriode(mode, offset);
+    var startKey = dateToKey(b.debut);
+    var endKey = dateToKey(b.fin);
+
+    var nbClients = 0;
+    var recetteTotale = 0;
+    var chargesTotal = 0;
+    var chargesParRubrique = {};
+    var creancesRecouvreesTotal = 0;
+
+    Object.keys(state.jours).forEach(function(k){
+      if(k >= startKey && k <= endKey){
+        var j = state.jours[k];
+        nbClients += j.clients.length;
+        recetteTotale += j.recette;
+        j.charges.forEach(function(c){
+          chargesTotal += c.montant;
+          chargesParRubrique[c.rubriqueId] = (chargesParRubrique[c.rubriqueId] || 0) + c.montant;
+        });
+        creancesRecouvreesDe(j).forEach(function(cr){
+          creancesRecouvreesTotal += cr.montant;
+        });
+      }
+    });
+
+    var creancesEnCoursTotal = 0;
+    state.creances.forEach(function(c){
+      if(c.date >= startKey && c.date <= endKey && c.statut === "en_cours"){
+        creancesEnCoursTotal += c.montant;
+      }
+    });
+
+    return {
+      startKey: startKey,
+      endKey: endKey,
+      nbClients: nbClients,
+      recetteTotale: recetteTotale,
+      chargesTotal: chargesTotal,
+      chargesParRubrique: chargesParRubrique,
+      soldeNetCumule: recetteTotale - chargesTotal,
+      creancesEnCoursTotal: creancesEnCoursTotal,
+      creancesRecouvreesTotal: creancesRecouvreesTotal
+    };
+  }
+
+  // ---------- Mon objectif (F8) ----------
+
+  function trouverModeleObjectif(id){
+    for(var i=0;i<OBJECTIF_MODELES.length;i++){
+      if(OBJECTIF_MODELES[i].id === id) return OBJECTIF_MODELES[i];
+    }
+    return null;
+  }
+
+  function jourADesDonnees(jour){
+    return !!jour && (jour.recette > 0 || (jour.charges && jour.charges.length > 0));
+  }
+
+  // Cherche, en remontant semaine par semaine, les dernières semaines qui
+  // contiennent réellement au moins un jour saisi (pas des semaines calendaires vides).
+  function semainesRecentesAvecDonnees(limite){
+    var resultats = [];
+    var offset = 0;
+    var essais = 0;
+    while(resultats.length < limite && essais < 52){
+      var b = bornesPeriode("semaine", offset);
+      var startKey = dateToKey(b.debut);
+      var endKey = dateToKey(b.fin);
+      var aDesDonnees = Object.keys(state.jours).some(function(k){
+        return k >= startKey && k <= endKey && jourADesDonnees(state.jours[k]);
+      });
+      if(aDesDonnees) resultats.push(offset);
+      offset -= 1;
+      essais += 1;
+    }
+    return resultats;
+  }
+
+  // Solde net moyen réel par semaine, sur les dernières semaines saisies.
+  // Retourne null si aucune donnée n'est encore disponible.
+  function soldeNetMoyenHebdo(){
+    var semaines = semainesRecentesAvecDonnees(NB_SEMAINES_MOYENNE);
+    if(semaines.length === 0) return null;
+    var total = 0;
+    semaines.forEach(function(offset){
+      total += calculerEtat("semaine", offset).soldeNetCumule;
+    });
+    return total / semaines.length;
+  }
+
+  // Montant estimé mis de côté pour l'objectif actif depuis sa création :
+  // le pourcentage choisi appliqué au solde net réel de chaque jour positif.
+  function montantEpargneEstime(obj){
+    if(!obj) return 0;
+    var total = 0;
+    Object.keys(state.jours).forEach(function(k){
+      if(k >= obj.dateCreation){
+        var j = state.jours[k];
+        var totalCharges = j.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+        var soldeJour = j.recette - totalCharges;
+        if(soldeJour > 0){
+          total += soldeJour * (obj.pourcentage / 100);
+        }
+      }
+    });
+    return Math.round(total);
+  }
+
+  function calculerScenarios(montantCible, montantDejaEpargne, soldeHebdoMoyen){
+    var montantRestant = Math.max(0, montantCible - montantDejaEpargne);
+    return SCENARIOS_OBJECTIF.map(function(sc){
+      var montantParSemaine = soldeHebdoMoyen > 0 ? Math.round(soldeHebdoMoyen * sc.pourcentage / 100) : 0;
+      var semaines = montantParSemaine > 0 ? Math.ceil(montantRestant / montantParSemaine) : null;
+      return {
+        pourcentage: sc.pourcentage,
+        nom: sc.nom,
+        montantParSemaine: montantParSemaine,
+        semaines: semaines
+      };
+    });
+  }
+
+  function formatDuree(semaines){
+    if(semaines == null) return "durée non estimable pour l’instant";
+    if(semaines <= 0) return "objectif atteint";
+    if(semaines === 1) return "1 semaine";
+    if(semaines < 9) return semaines + " semaines";
+    var mois = Math.round(semaines / 4.345);
+    if(mois < 1) mois = 1;
+    if(mois < 24) return "environ " + mois + " mois";
+    var ans = Math.round(mois / 12);
+    return "environ " + ans + (ans > 1 ? " ans" : " an");
+  }
+
+  // ---------- Sauvegarde et restauration (F10) ----------
+
+  function nombreJoursEnregistres(donneesJours){
+    return Object.keys(donneesJours || {}).length;
+  }
+
+  function telechargerSauvegarde(){
+    try{
+      var donnees = JSON.stringify(state, null, 2);
+      var blob = new Blob([donnees], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "mondjai-salonh-sauvegarde-" + todayKey() + ".json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      state.meta.derniereSauvegarde = todayKey();
+      state.meta.dernierRappelSauvegarde = todayKey();
+      saveState();
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
+  function stateDepuisImport(parsed){
+    var base = defaultState();
+    if(!parsed || typeof parsed !== "object") return null;
+    return {
+      version: 1,
+      config: Object.assign({}, base.config, parsed.config || {}),
+      jours: (parsed.jours && typeof parsed.jours === "object") ? parsed.jours : {},
+      dernierMontant: parsed.dernierMontant || {},
+      creances: Array.isArray(parsed.creances) ? parsed.creances : [],
+      objectif: parsed.objectif || null,
+      meta: Object.assign({}, base.meta, parsed.meta || {})
+    };
+  }
+
+  function rappelSauvegardeActif(){
+    if(Object.keys(state.jours).length === 0) return false;
+    var derniere = state.meta.derniereSauvegarde;
+    var dernierRappel = state.meta.dernierRappelSauvegarde;
+    var joursSansSauvegarde = derniere ? joursDepuis(derniere) : 9999;
+    if(joursSansSauvegarde < RAPPEL_SAUVEGARDE_JOURS) return false;
+    if(dernierRappel && joursDepuis(dernierRappel) < RAPPEL_SAUVEGARDE_JOURS) return false;
+    return true;
+  }
+
+  // ---------- Etat d'interface (non persisté) ----------
+
+  var ui = {
+    onboardingStep: state.config.onboardingComplete ? null : "statut",
+    statutChoisi: state.config.statut,
+    cotisationSaisie: state.config.cotisationHabituelle ? String(state.config.cotisationHabituelle) : "",
+    rubriquesDraft: null,        // liste de travail pendant l'onboarding
+    ajoutRubriquePerso: false,
+    persoNom: "",
+    persoIcone: EMOJI_SUGGESTIONS[0],
+    persoCouleur: COULEUR_SUGGESTIONS[0],
+
+    modal: null,                 // null | 'client' | 'charge-grid' | 'charge-montant' | 'charge-edit' | 'creance-ajout'
+    clientMontant: "",
+    chargeRubriqueId: null,
+    chargeMontant: "",
+
+    page: "jour",                 // 'jour' | 'creances' | 'etat' | 'objectif' | 'historique' | 'jour-detail'
+
+    chargeEditId: null,
+    chargeEditMontant: "",
+
+    creanceNom: "",
+    creanceMontant: "",
+    creanceDate: "",
+
+    etatMode: "semaine",          // 'semaine' | 'mois'
+    etatOffset: 0,                // 0 = période en cours, -1 = précédente, etc.
+
+    historiqueSelection: null,    // clé 'AAAA-MM-JJ' du jour consulté
+
+    // Mon objectif (F8)
+    objectifEtape: "modeles",     // 'modeles' | 'montant' | 'scenarios'
+    objectifModeleChoisi: null,
+    objectifMontantSaisi: "",
+    objectifScenarioChoisi: null,
+    objectifModifierRythme: false,
+    objectifConfirmationReset: false,
+
+    // Sauvegarde / restauration (F10)
+    restaurationFichier: null,    // objet JSON parsé, en attente de confirmation
+    restaurationErreur: "",
+
+    // Verrouillage par code PIN (F11)
+    verrouille: false,             // calculé au démarrage, voir plus bas
+    pinSaisie: "",
+    pinErreur: false,
+    pinOublieConfirmation: false,
+
+    // Écrans secondaires ouverts depuis l'en-tête (Réglages, Partager, À propos)
+    pagePrecedente: "jour",        // onglet à retrouver en quittant un écran secondaire
+    ajoutRubriqueContexte: "onboarding",  // 'onboarding' | 'reglages' — où pousser la rubrique perso créée
+
+    // Réglages (F11)
+    reglagesCotisationSaisie: "",
+    reglagesPinEtape: null,        // null | 'activer-1' | 'activer-2' | 'modifier-1' | 'modifier-2'
+    reglagesPinTemp: "",
+    reglagesPinErreur: "",
+
+    // Partager (F9)
+    partagerMode: "jour",          // 'jour' | 'semaine' | 'mois'
+    partagerOffset: 0
+  };
+
+  ui.verrouille = !!(state.config.onboardingComplete && state.config.pinActif && state.config.pin);
+
+  function initRubriquesDraft(){
+    ui.rubriquesDraft = RUBRIQUES_PRECONFIGUREES.map(function(r){
+      var actif;
+      if(r.id === "cotisation"){
+        actif = ui.statutChoisi === "locataire";
+      }else{
+        actif = !!r.defaut;
+      }
+      return { id:r.id, nom:r.nom, icone:r.icone, couleur:r.couleur, actif:actif, perso:false };
+    });
+  }
+
+  // ---------- Rendu ----------
+
+  var app = document.getElementById("app");
+
+  function render(){
+    if(ui.verrouille){
+      app.innerHTML = renderVerrouillage();
+      attachHandlers();
+      return;
+    }
+    if(!state.config.onboardingComplete){
+      if(ui.onboardingStep === "rubriques" && !ui.rubriquesDraft){
+        initRubriquesDraft();
+      }
+      if(ui.onboardingStep === "rubriques"){
+        app.innerHTML = renderOnboardingRubriques();
+      }else{
+        app.innerHTML = renderOnboardingStatut();
+      }
+    }else{
+      var page = ui.page || "jour";
+      var pageHtml;
+      var navActive = page;
+      if(page === "creances") pageHtml = renderCreances();
+      else if(page === "etat") pageHtml = renderEtat();
+      else if(page === "objectif") pageHtml = renderObjectif();
+      else if(page === "historique") pageHtml = renderHistorique();
+      else if(page === "jour-detail"){ pageHtml = renderJourDetail(ui.historiqueSelection); navActive = "historique"; }
+      else if(page === "reglages"){ pageHtml = renderReglages(); navActive = ui.pagePrecedente; }
+      else if(page === "partager"){ pageHtml = renderPartager(); navActive = ui.pagePrecedente; }
+      else if(page === "apropos"){ pageHtml = renderApropos(); navActive = ui.pagePrecedente; }
+      else pageHtml = renderJour();
+
+      app.innerHTML = pageHtml + renderNavBar(navActive);
+      if(ui.modal){
+        app.innerHTML += renderModal();
+      }
+    }
+    attachHandlers();
+    if(!ui.verrouille && ui.page === "partager"){
+      dessinerCanvasPartage();
+    }
+  }
+
+  function renderNavBar(active){
+    var items = [
+      { id:"jour", icone:"🏠", label:"Aujourd’hui" },
+      { id:"creances", icone:"🧾", label:"Créances" },
+      { id:"etat", icone:"📊", label:"Mon état" },
+      { id:"objectif", icone:"🎯", label:"Objectif" },
+      { id:"historique", icone:"🗂️", label:"Historique" }
+    ];
+    var enCours = sommeCreancesEnCours();
+    var html = '<nav class="navbar">';
+    items.forEach(function(it){
+      var dot = (it.id === "creances" && enCours > 0) ? '<span class="navdot"></span>' : "";
+      html += '<button type="button" class="navbtn' + (active === it.id ? " active" : "") + '" data-action="aller-page" data-page="' + it.id + '">' +
+                '<span class="navicon">' + it.icone + dot + '</span>' +
+                '<span class="navlabel">' + it.label + '</span>' +
+              '</button>';
+    });
+    html += '</nav>';
+    return html;
+  }
+
+  function brandHeader(sub){
+    return (
+      '<div class="brand">' +
+        '<div class="brand-mark">S</div>' +
+        '<div class="brand-info">' +
+          '<div class="brand-name">MonDjai/Salon H</div>' +
+          (sub ? '<div class="brand-sub">' + sub + '</div>' : "") +
+        "</div>" +
+        '<div class="brand-actions">' +
+          '<button type="button" class="brand-action" data-action="ouvrir-partager" aria-label="Partager">📤</button>' +
+          '<button type="button" class="brand-action" data-action="ouvrir-reglages" aria-label="Réglages">⚙️</button>' +
+        "</div>" +
+      "</div>"
+    );
+  }
+
+  // --- Verrouillage par code PIN (F11) ---
+
+  function renderVerrouillage(){
+    var html = '<div class="pin-screen' + (ui.pinErreur ? " pin-erreur" : "") + '">';
+    html += '<div class="brand-mark" style="width:48px;height:48px;font-size:22px;">S</div>';
+    html += '<div class="pin-titre">MonDjai/Salon H</div>';
+    html += '<div class="pin-sous-titre">Entrez votre code à 4 chiffres</div>';
+
+    html += '<div class="pin-dots">';
+    for(var i=0;i<4;i++){
+      html += '<span class="pin-dot' + (i < ui.pinSaisie.length ? " rempli" : "") + '"></span>';
+    }
+    html += "</div>";
+
+    html += '<div class="pin-erreur-msg">' + (ui.pinErreur ? "Code incorrect, réessayez." : "") + '</div>';
+
+    html += renderPinClavier("pin-toucher-chiffre", "pin-effacer-chiffre");
+
+    html += '<button type="button" class="pin-oublie" data-action="ouvrir-pin-oublie">Code oublié ?</button>';
+    html += "</div>";
+
+    if(ui.pinOublieConfirmation){
+      html += '<div class="overlay" data-action="fermer-pin-oublie-backdrop"><div class="sheet" data-stop="1">';
+      html += '<div class="sheet-head"><div class="sheet-title">Code oublié</div><button type="button" class="sheet-close" data-action="fermer-pin-oublie">✕</button></div>';
+      html += '<div class="muted">Retirer le code enlève la protection à l’ouverture. Vos données restent intactes sur ce téléphone.</div>';
+      html += '<div class="btn-row" style="margin-top:14px;">';
+      html += '<button type="button" class="btn btn-ghost" data-action="fermer-pin-oublie">Annuler</button>';
+      html += '<button type="button" class="btn btn-danger-outline" data-action="retirer-pin-oublie">Retirer le code</button>';
+      html += "</div></div></div>";
+    }
+
+    return html;
+  }
+
+  // Clavier numérique réutilisé pour le verrouillage et pour la création/modification du PIN en Réglages.
+  function renderPinClavier(actionChiffre, actionEffacer){
+    var touches = ["1","2","3","4","5","6","7","8","9","","0","⌫"];
+    var html = '<div class="pin-keypad">';
+    touches.forEach(function(t){
+      if(t === ""){
+        html += '<span class="pin-key pin-key-vide"></span>';
+      }else if(t === "⌫"){
+        html += '<button type="button" class="pin-key pin-key-effacer" data-action="' + actionEffacer + '">⌫</button>';
+      }else{
+        html += '<button type="button" class="pin-key" data-action="' + actionChiffre + '" data-chiffre="' + t + '">' + t + '</button>';
+      }
+    });
+    html += "</div>";
+    return html;
+  }
+
+  // --- Onboarding : statut ---
+
+  function renderOnboardingStatut(){
+    var statuts = [
+      { id:"salarie", titre:"Salarié à commission", desc:"Vous êtes payé au pourcentage sur les services que vous réalisez." },
+      { id:"locataire", titre:"Locataire de ma place", desc:"Vous payez une cotisation ou un loyer de place au salon." },
+      { id:"independant", titre:"Indépendant à domicile", desc:"Vous travaillez seul, chez vous ou en déplacement." }
+    ];
+
+    var html = "";
+    html += brandHeader('« Chaque coupe compte. »');
+    html += '<div class="card">';
+    html += '<div class="step-label">Étape 1 sur 2</div>';
+    html += '<div class="title-lg">Votre statut</div>';
+    html += '<div class="muted">Pour adapter l’application à votre façon de travailler.</div>';
+    html += '<div class="choice-list">';
+    statuts.forEach(function(s){
+      var sel = ui.statutChoisi === s.id;
+      html += '<button type="button" class="choice' + (sel ? " selected" : "") + '" data-action="choisir-statut" data-id="' + s.id + '">' +
+                '<span class="choice-dot"></span>' +
+                '<span class="choice-txt"><strong>' + s.titre + '</strong><span>' + s.desc + '</span></span>' +
+              "</button>";
+    });
+    html += "</div>";
+
+    if(ui.statutChoisi === "locataire"){
+      html += '<div class="field">' +
+                '<label>Montant habituel de la cotisation</label>' +
+                '<div class="amount-field">' +
+                  '<input type="tel" inputmode="numeric" id="input-cotisation" placeholder="Ex. 1 500" value="' + escapeHtml(ui.cotisationSaisie) + '">' +
+                  '<span class="amount-suffix">F</span>' +
+                "</div>" +
+                '<div class="muted" style="margin-top:6px;">Proposé par défaut à chaque saisie, toujours modifiable.</div>' +
+              "</div>";
+    }
+
+    html += "</div>";
+
+    var peutContinuer = !!ui.statutChoisi && (ui.statutChoisi !== "locataire" || parseMontant(ui.cotisationSaisie) > 0);
+
+    html += '<button type="button" class="btn btn-primary" data-action="continuer-statut"' + (peutContinuer ? "" : " disabled") + '>Continuer</button>';
+
+    return html;
+  }
+
+  // --- Onboarding : rubriques ---
+
+  function renderOnboardingRubriques(){
+    var actives = ui.rubriquesDraft.filter(function(r){ return r.actif; }).length;
+
+    var html = "";
+    html += brandHeader("Configuration initiale");
+    html += '<div class="card">';
+    html += '<div class="step-label">Étape 2 sur 2</div>';
+    html += '<div class="title-lg">Vos rubriques de charges</div>';
+    html += '<div class="muted">Cochez celles qui vous concernent. Vous pourrez ajouter les vôtres.</div>';
+
+    html += '<div class="rubrique-grid">';
+    ui.rubriquesDraft.forEach(function(r, idx){
+      html += renderRubriqueTuile(r, idx);
+    });
+    html += "</div>";
+
+    if(actives > MAX_RUBRIQUES_CONSEILLE){
+      html += '<div class="soft-msg">Trop de rubriques tue le suivi. Vous avez ' + actives + ' rubriques actives — gardez l’essentiel pour aller vite entre deux clients.</div>';
+    }
+
+    if(!ui.ajoutRubriquePerso){
+      html += '<button type="button" class="add-rubrique-btn" data-action="ouvrir-ajout-perso">+ Ajouter une rubrique personnalisée</button>';
+    }else{
+      html += renderFormulairePerso();
+    }
+
+    html += "</div>";
+
+    html += '<div class="btn-row">';
+    html += '<button type="button" class="btn btn-secondary" data-action="retour-statut">Retour</button>';
+    html += '<button type="button" class="btn btn-primary" data-action="terminer-onboarding">Terminer</button>';
+    html += "</div>";
+
+    return html;
+  }
+
+  function renderRubriqueTuile(r, idx){
+    return '<div class="rubrique-item' + (r.actif ? " selected" : "") + (r.perso ? " perso-tag" : "") + '" data-action="toggle-rubrique-draft" data-idx="' + idx + '">' +
+             '<span class="rubrique-check"></span>' +
+             '<span class="rubrique-icon" style="background:' + r.couleur + '22;color:' + r.couleur + ';">' + r.icone + "</span>" +
+             '<span class="rubrique-nom">' + escapeHtml(r.nom) + "</span>" +
+           "</div>";
+  }
+
+  function renderFormulairePerso(){
+    var html = '<div class="custom-form">';
+    html += '<div class="field" style="margin-top:0;">' +
+              '<label>Nom de la rubrique</label>' +
+              '<input type="text" id="input-perso-nom" placeholder="Ex. Musique, Wifi, Loyer local" value="' + escapeHtml(ui.persoNom) + '">' +
+            "</div>";
+
+    html += '<div class="field"><label>Icône</label><div class="emoji-row">';
+    EMOJI_SUGGESTIONS.forEach(function(e){
+      html += '<button type="button" class="emoji-choice' + (ui.persoIcone === e ? " selected" : "") + '" data-action="choisir-emoji-perso" data-emoji="' + e + '">' + e + "</button>";
+    });
+    html += "</div></div>";
+
+    html += '<div class="field"><label>Couleur</label><div class="color-row">';
+    COULEUR_SUGGESTIONS.forEach(function(c){
+      html += '<button type="button" class="color-choice' + (ui.persoCouleur === c ? " selected" : "") + '" style="background:' + c + ';" data-action="choisir-couleur-perso" data-couleur="' + c + '"></button>';
+    });
+    html += "</div></div>";
+
+    var peutAjouter = ui.persoNom.trim().length > 0;
+    html += '<div class="btn-row">';
+    html += '<button type="button" class="btn btn-ghost" data-action="annuler-ajout-perso">Annuler</button>';
+    html += '<button type="button" class="btn btn-primary" data-action="valider-ajout-perso"' + (peutAjouter ? "" : " disabled") + '>Ajouter</button>';
+    html += "</div>";
+    html += "</div>";
+    return html;
+  }
+
+  // --- Ecran du jour ---
+
+  function renderJour(){
+    var jour = ensureJour();
+    var totalCharges = jour.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+    var solde = jour.recette - totalCharges;
+    var enPerte = solde < 0;
+
+    var html = "";
+    html += brandHeader(todayLabel());
+
+    if(rappelSauvegardeActif()){
+      html += '<div class="soft-msg rappel-sauvegarde">' +
+                'Pensez à sauvegarder vos données cette semaine — elles ne vivent que sur ce téléphone.' +
+                '<div class="btn-row" style="margin-top:10px;">' +
+                  '<button type="button" class="btn-sm btn-sm-payer" data-action="sauvegarder-donnees">Sauvegarder maintenant</button>' +
+                  '<button type="button" class="btn-sm btn-sm-annuler" data-action="rappel-plus-tard">Plus tard</button>' +
+                "</div>" +
+              "</div>";
+    }
+
+    html += '<div class="card solde-card">';
+    if(enPerte){
+      html += '<div class="solde-label">Aujourd’hui</div>';
+      html += '<div class="solde-value perte">Jour à perte : ' + formatFCFA(Math.abs(solde)) + "</div>";
+    }else{
+      html += '<div class="solde-label">Solde net du jour</div>';
+      html += '<div class="solde-value positif">' + formatFCFA(solde) + "</div>";
+    }
+    html += '<div class="stat-row">';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div></div>';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(totalCharges) + '</div><div class="stat-label">Charges (' + jour.charges.length + ")</div></div>";
+    html += "</div>";
+
+    var enCours = sommeCreancesEnCours();
+    if(enCours > 0){
+      var nbEnCours = creancesEnCours().length;
+      html += '<button type="button" class="badge-chip" data-action="aller-page" data-page="creances">' +
+                '<span class="dot"></span>' +
+                nbEnCours + (nbEnCours > 1 ? " créances en cours · " : " créance en cours · ") + formatFCFA(enCours) +
+              '</button>';
+    }
+    html += "</div>";
+
+    if(state.objectif){
+      var objDash = state.objectif;
+      var epargneDash = montantEpargneEstime(objDash);
+      var pctDash = objDash.montantCible > 0 ? Math.min(100, Math.round(epargneDash / objDash.montantCible * 100)) : 0;
+      var modeleDash = trouverModeleObjectif(objDash.modele) || { icone:"🎯" };
+      html += '<button type="button" class="card objectif-mini" data-action="aller-page" data-page="objectif">' +
+                '<div class="objectif-mini-head">' +
+                  '<span class="modele-icon-sm">' + modeleDash.icone + '</span>' +
+                  '<span class="objectif-mini-nom">' + escapeHtml(objDash.nom) + '</span>' +
+                  '<span class="objectif-mini-pct">' + pctDash + '%</span>' +
+                '</div>' +
+                '<div class="jauge-track"><div class="jauge-fill" style="width:' + pctDash + '%;"></div></div>' +
+              '</button>';
+    }
+
+    html += '<button type="button" class="client-btn" data-action="ouvrir-client"><span class="plus-circle">+</span> Client encaissé</button>';
+
+    html += '<div class="section-title">Charges du jour</div>';
+    if(jour.charges.length === 0){
+      html += '<div class="card"><div class="empty-note">Aucune charge notée pour l’instant.<br>Utilisez le bouton + en bas de l’écran.</div></div>';
+    }else{
+      html += '<div class="charge-list">';
+      jour.charges.slice().reverse().forEach(function(c){
+        var r = findRubrique(c.rubriqueId);
+        var icone = r ? r.icone : "❓";
+        var couleur = r ? r.couleur : "#8a94a6";
+        var nom = r ? r.nom : "Rubrique supprimée";
+        var heure = formatHeure(c.ts);
+        html += '<div class="charge-row" style="cursor:pointer;" data-action="editer-charge" data-id="' + c.id + '">' +
+                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
+                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span><br><span class="charge-heure">' + heure + "</span></span>" +
+                  '<span class="charge-montant">-' + formatFCFA(c.montant) + "</span>" +
+                "</div>";
+      });
+      html += "</div>";
+      html += '<div class="muted" style="margin-top:8px;">Touchez une charge pour la modifier ou la supprimer.</div>';
+    }
+
+    html += '<button type="button" class="fab" data-action="ouvrir-charge-grille" aria-label="Ajouter une charge">+</button>';
+
+    return html;
+  }
+
+  function formatHeure(ts){
+    try{
+      var d = new Date(ts);
+      return pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+    }catch(e){
+      return "";
+    }
+  }
+
+  // --- Ecran Mes créances ---
+
+  function renderCreances(){
+    var enCoursListe = creancesEnCours().slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+    var payeesRecemment = state.creances.filter(function(c){ return c.statut === "payee"; })
+      .sort(function(a,b){ return (b.tsPaiement||0) - (a.tsPaiement||0); })
+      .slice(0, 8);
+
+    var html = "";
+    html += brandHeader("Mes créances");
+
+    html += '<button type="button" class="client-btn" data-action="ouvrir-ajout-creance"><span class="plus-circle">+</span> Client à crédit</button>';
+
+    var ancienneNb = enCoursListe.filter(function(c){ return joursDepuis(c.date) >= 14; }).length;
+    if(ancienneNb > 0){
+      html += '<div class="soft-msg">' + ancienneNb + (ancienneNb > 1 ? " créances datent" : " créance date") + ' de plus de deux semaines. Un petit rappel au client, si l’occasion se présente.</div>';
+    }
+
+    html += '<div class="section-title">En cours' + (enCoursListe.length ? " (" + enCoursListe.length + ")" : "") + '</div>';
+    if(enCoursListe.length === 0){
+      html += '<div class="card"><div class="empty-note">Aucune créance en cours.<br>Tout est encaissé.</div></div>';
+    }else{
+      html += '<div class="creance-list">';
+      enCoursListe.forEach(function(c){
+        var ancienne = joursDepuis(c.date) >= 14;
+        html += '<div class="creance-row">' +
+                  '<span class="creance-info">' +
+                    '<span class="creance-nom">' + escapeHtml(c.nom) + '</span><br>' +
+                    '<span class="creance-date">Depuis le ' + formatDateCourte(c.date) + (ancienne ? " · en attente" : "") + '</span>' +
+                  '</span>' +
+                  '<span class="creance-montant">' + formatFCFA(c.montant) + '</span>' +
+                  '<span class="creance-actions">' +
+                    '<button type="button" class="btn-sm btn-sm-payer" data-action="marquer-payee" data-id="' + c.id + '">✓ Payé</button>' +
+                    '<button type="button" class="btn-sm btn-sm-annuler" data-action="supprimer-creance" data-id="' + c.id + '">Annuler</button>' +
+                  '</span>' +
+                '</div>';
+      });
+      html += "</div>";
+    }
+
+    if(payeesRecemment.length > 0){
+      html += '<div class="section-title" style="margin-top:18px;">Recouvrées récemment</div>';
+      html += '<div class="creance-list">';
+      payeesRecemment.forEach(function(c){
+        html += '<div class="creance-row payee">' +
+                  '<span class="creance-info">' +
+                    '<span class="creance-nom">' + escapeHtml(c.nom) + '</span><br>' +
+                    '<span class="creance-date">Recouvrée le ' + formatDateCourte(c.datePaiement) + '</span>' +
+                  '</span>' +
+                  '<span class="creance-montant">' + formatFCFA(c.montant) + '</span>' +
+                  '<span class="creance-tag-payee">Payé</span>' +
+                '</div>';
+      });
+      html += "</div>";
+    }
+
+    return html;
+  }
+
+  // --- Ecran Mon état ---
+
+  function renderEtat(){
+    var mode = ui.etatMode;
+    var offset = ui.etatOffset;
+    var e = calculerEtat(mode, offset);
+
+    var html = "";
+    html += brandHeader("Mon état");
+
+    html += '<div class="etat-tabs">';
+    html += '<button type="button" class="etat-tab' + (mode === "semaine" ? " active" : "") + '" data-action="etat-mode" data-mode="semaine">Semaine</button>';
+    html += '<button type="button" class="etat-tab' + (mode === "mois" ? " active" : "") + '" data-action="etat-mode" data-mode="mois">Mois</button>';
+    html += "</div>";
+
+    html += '<div class="etat-period-nav">';
+    html += '<button type="button" data-action="etat-precedent" aria-label="Période précédente">‹</button>';
+    html += '<div class="etat-period-label">' + labelPeriode(mode, offset) + '</div>';
+    html += '<button type="button" data-action="etat-suivant" aria-label="Période suivante"' + (offset >= 0 ? " disabled" : "") + '>›</button>';
+    html += "</div>";
+
+    html += '<div class="card">';
+    html += '<div class="etat-grid">';
+    html += '<div class="etat-stat"><div class="num">' + e.nbClients + '</div><div class="label">Clients encaissés</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.recetteTotale) + '</div><div class="label">Recette totale</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.chargesTotal) + '</div><div class="label">Charges totales</div></div>';
+    html += '<div class="etat-stat"><div class="num ' + (e.soldeNetCumule < 0 ? "perte" : "positif") + '">' + formatFCFA(e.soldeNetCumule) + '</div><div class="label">Solde net cumulé</div></div>';
+    html += "</div>";
+    html += "</div>";
+
+    html += '<div class="section-title">Charges par rubrique</div>';
+    var rubriqueIds = Object.keys(e.chargesParRubrique);
+    if(rubriqueIds.length === 0){
+      html += '<div class="card"><div class="empty-note">Aucune charge sur cette période.</div></div>';
+    }else{
+      rubriqueIds.sort(function(a,b){ return e.chargesParRubrique[b] - e.chargesParRubrique[a]; });
+      html += '<div class="charge-list">';
+      rubriqueIds.forEach(function(rid){
+        var r = findRubrique(rid);
+        var icone = r ? r.icone : "❓";
+        var couleur = r ? r.couleur : "#8a94a6";
+        var nom = r ? r.nom : "Rubrique supprimée";
+        html += '<div class="rubrique-stat-row">' +
+                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
+                  '<span class="rubrique-stat-nom">' + escapeHtml(nom) + '</span>' +
+                  '<span class="rubrique-stat-montant">' + formatFCFA(e.chargesParRubrique[rid]) + '</span>' +
+                "</div>";
+      });
+      html += "</div>";
+    }
+
+    html += '<div class="section-title" style="margin-top:18px;">Créances</div>';
+    html += '<div class="card">';
+    html += '<div class="etat-grid">';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.creancesEnCoursTotal) + '</div><div class="label">Nées cette période, en attente</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.creancesRecouvreesTotal) + '</div><div class="label">Recouvrées cette période</div></div>';
+    html += "</div>";
+    html += "</div>";
+
+    return html;
+  }
+
+  // --- Ecran Mon objectif (F8) ---
+
+  function renderObjectif(){
+    var html = "";
+    html += brandHeader("Mon objectif");
+    if(!state.objectif){
+      html += renderObjectifCreation();
+    }else{
+      html += renderObjectifActif();
+    }
+    return html;
+  }
+
+  function renderObjectifCreation(){
+    var etape = ui.objectifEtape;
+    var html = "";
+
+    if(etape === "montant" || etape === "scenarios"){
+      var modele = trouverModeleObjectif(ui.objectifModeleChoisi);
+      if(!modele){
+        ui.objectifEtape = "modeles";
+        etape = "modeles";
+      }
+    }
+
+    if(etape === "modeles"){
+      html += '<div class="card">';
+      html += '<div class="title-md">Choisissez un modèle</div>';
+      html += '<div class="muted">Le montant proposé est une suggestion : vous pourrez le changer.</div>';
+      html += '<div class="modele-list">';
+      OBJECTIF_MODELES.forEach(function(m){
+        html += '<button type="button" class="modele-card" data-action="choisir-modele-objectif" data-id="' + m.id + '">' +
+                  '<span class="modele-icon">' + m.icone + '</span>' +
+                  '<span class="modele-txt">' +
+                    '<strong>' + escapeHtml(m.nom) + '</strong>' +
+                    '<span>' + escapeHtml(m.description) + '</span>' +
+                    '<span class="modele-montant">Suggestion : ' + formatFCFA(m.montantSuggere) + '</span>' +
+                  '</span>' +
+                "</button>";
+      });
+      html += "</div></div>";
+      return html;
+    }
+
+    var modeleChoisi = trouverModeleObjectif(ui.objectifModeleChoisi);
+
+    if(etape === "montant"){
+      var montantSaisi = parseMontant(ui.objectifMontantSaisi);
+      html += '<button type="button" class="back-link" data-action="objectif-retour-modeles">‹ Changer de modèle</button>';
+      html += '<div class="card">';
+      html += '<div class="selected-rubrique-preview">' +
+                '<span class="charge-icon" style="background:var(--accent-ink);color:var(--accent);">' + modeleChoisi.icone + '</span>' +
+                '<strong>' + escapeHtml(modeleChoisi.nom) + '</strong>' +
+              '</div>';
+      html += '<div class="field" style="margin-top:0;">' +
+                '<label>Montant cible</label>' +
+                '<div class="amount-field">' +
+                  '<input type="tel" inputmode="numeric" id="input-objectif-montant" value="' + escapeHtml(ui.objectifMontantSaisi) + '" autofocus>' +
+                  '<span class="amount-suffix">F</span>' +
+                "</div>" +
+              "</div>";
+      html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="objectif-continuer-montant"' + (montantSaisi > 0 ? "" : " disabled") + '>Voir les 3 façons d’y arriver</button>';
+      html += "</div>";
+      return html;
+    }
+
+    // etape === "scenarios"
+    var montantCible = parseMontant(ui.objectifMontantSaisi);
+    var soldeHebdo = soldeNetMoyenHebdo();
+    var scenarios = calculerScenarios(montantCible, 0, soldeHebdo || 0);
+
+    html += '<button type="button" class="back-link" data-action="objectif-retour-montant">‹ Changer le montant</button>';
+    html += '<div class="card">';
+    html += '<div class="selected-rubrique-preview">' +
+              '<span class="charge-icon" style="background:var(--accent-ink);color:var(--accent);">' + modeleChoisi.icone + '</span>' +
+              '<strong>' + escapeHtml(modeleChoisi.nom) + ' · ' + formatFCFA(montantCible) + '</strong>' +
+            '</div>';
+
+    if(soldeHebdo === null){
+      html += '<div class="soft-msg">Pas encore assez de journées enregistrées pour calculer votre rythme réel. Les 3 scénarios ci-dessous partent de 0 F pour l’instant — ils s’ajusteront tout seuls au fil de vos prochaines journées.</div>';
+    }else{
+      html += '<div class="muted">D’après votre solde net moyen réel des dernières semaines : <strong>' + formatFCFA(Math.round(soldeHebdo)) + ' / semaine</strong>.</div>';
+    }
+
+    html += '<div class="section-title" style="margin-top:16px;">3 façons d’y arriver</div>';
+    html += '<div class="scenario-list">';
+    scenarios.forEach(function(sc){
+      var sel = ui.objectifScenarioChoisi === sc.pourcentage;
+      html += '<button type="button" class="scenario-card' + (sel ? " selected" : "") + '" data-action="choisir-scenario-objectif" data-pourcentage="' + sc.pourcentage + '">' +
+                '<span class="scenario-head"><strong>' + sc.nom + '</strong><span class="scenario-pct">' + sc.pourcentage + '%</span></span>' +
+                '<span class="scenario-detail">' + formatFCFA(sc.montantParSemaine) + ' / semaine · ' + formatDuree(sc.semaines) + '</span>' +
+              "</button>";
+    });
+    html += "</div>";
+
+    html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="creer-objectif"' + (ui.objectifScenarioChoisi ? "" : " disabled") + '>Créer mon objectif</button>';
+    html += "</div>";
+    return html;
+  }
+
+  function renderObjectifActif(){
+    var obj = state.objectif;
+    var modele = trouverModeleObjectif(obj.modele) || { icone:"🎯" };
+    var epargne = montantEpargneEstime(obj);
+    var pct = obj.montantCible > 0 ? Math.min(100, Math.round(epargne / obj.montantCible * 100)) : 0;
+    var soldeHebdo = soldeNetMoyenHebdo();
+    var montantParSemaine = soldeHebdo > 0 ? Math.round(soldeHebdo * obj.pourcentage / 100) : 0;
+    var montantRestant = Math.max(0, obj.montantCible - epargne);
+    var semaines = montantParSemaine > 0 ? Math.ceil(montantRestant / montantParSemaine) : null;
+    var scenarioActuel = SCENARIOS_OBJECTIF.filter(function(s){ return s.pourcentage === obj.pourcentage; })[0];
+    var scenarioNom = scenarioActuel ? scenarioActuel.nom : "";
+
+    var html = "";
+    html += '<div class="card">';
+    html += '<div class="selected-rubrique-preview">' +
+              '<span class="charge-icon" style="background:var(--accent-ink);color:var(--accent);">' + modele.icone + '</span>' +
+              '<strong>' + escapeHtml(obj.nom) + '</strong>' +
+            '</div>';
+
+    html += '<div class="jauge-wrap">' +
+              '<div class="jauge-track"><div class="jauge-fill" style="width:' + pct + '%;"></div></div>' +
+              '<div class="jauge-label">' + formatFCFA(epargne) + ' sur ' + formatFCFA(obj.montantCible) + ' (' + pct + '%)</div>' +
+            "</div>";
+
+    if(pct >= 100){
+      html += '<div class="soft-msg" style="border-color:#1d4a34;background:#0f2a20;color:#7fe0b4;">Objectif atteint ! Bravo — vous pouvez en démarrer un nouveau quand vous voulez.</div>';
+    }else{
+      html += '<div class="muted" style="margin-top:12px;">Au rythme ' + scenarioNom + ' (' + obj.pourcentage + '%) : ' + formatFCFA(montantParSemaine) + ' / semaine · ' + formatDuree(semaines) + ' estimé.</div>';
+    }
+
+    html += '<div class="btn-row" style="margin-top:16px;">';
+    html += '<button type="button" class="btn btn-secondary" data-action="objectif-changer-rythme">Changer de rythme</button>';
+    html += '<button type="button" class="btn btn-ghost" data-action="objectif-proposer-reset">Recommencer</button>';
+    html += "</div>";
+    html += "</div>";
+
+    if(ui.objectifModifierRythme){
+      var scenariosMaj = calculerScenarios(obj.montantCible, epargne, soldeHebdo || 0);
+      html += '<div class="card">';
+      html += '<div class="title-md">Changer de rythme</div>';
+      html += '<div class="scenario-list">';
+      scenariosMaj.forEach(function(sc){
+        var sel = obj.pourcentage === sc.pourcentage;
+        html += '<button type="button" class="scenario-card' + (sel ? " selected" : "") + '" data-action="appliquer-rythme" data-pourcentage="' + sc.pourcentage + '">' +
+                  '<span class="scenario-head"><strong>' + sc.nom + '</strong><span class="scenario-pct">' + sc.pourcentage + '%</span></span>' +
+                  '<span class="scenario-detail">' + formatFCFA(sc.montantParSemaine) + ' / semaine · ' + formatDuree(sc.semaines) + '</span>' +
+                "</button>";
+      });
+      html += "</div>";
+      html += '<button type="button" class="btn btn-ghost" style="margin-top:10px;" data-action="objectif-fermer-rythme">Annuler</button>';
+      html += "</div>";
+    }
+
+    if(ui.objectifConfirmationReset){
+      html += '<div class="card">';
+      html += '<div class="muted">Recommencer efface cet objectif — vos recettes et vos charges ne sont pas touchées. Vous pourrez créer un nouvel objectif juste après.</div>';
+      html += '<div class="btn-row" style="margin-top:12px;">';
+      html += '<button type="button" class="btn btn-ghost" data-action="objectif-annuler-reset">Annuler</button>';
+      html += '<button type="button" class="btn btn-danger-outline" data-action="objectif-confirmer-reset">Oui, recommencer</button>';
+      html += "</div></div>";
+    }
+
+    return html;
+  }
+
+  // --- Ecran Historique ---
+
+  function renderHistorique(){
+    var today = todayKey();
+    var cles = Object.keys(state.jours).filter(function(k){ return k !== today; }).sort().reverse();
+
+    var html = "";
+    html += brandHeader("Historique");
+
+    if(cles.length === 0){
+      html += '<div class="card"><div class="empty-note">Pas encore de jour archivé.<br>Vos journées précédentes apparaîtront ici.</div></div>';
+      return html;
+    }
+
+    html += '<div class="hist-list">';
+    cles.forEach(function(k){
+      var j = state.jours[k];
+      var totalCharges = j.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+      var solde = j.recette - totalCharges;
+      html += '<button type="button" class="hist-row" data-action="voir-jour-detail" data-key="' + k + '">' +
+                '<span>' +
+                  '<span class="hist-date">' + formatDateCourte(k) + '</span><br>' +
+                  '<span class="hist-sub">' + j.clients.length + (j.clients.length > 1 ? " clients · " : " client · ") + j.charges.length + (j.charges.length > 1 ? " charges" : " charge") + '</span>' +
+                '</span>' +
+                '<span class="hist-solde ' + (solde < 0 ? "perte" : "positif") + '">' + formatFCFA(solde) + '</span>' +
+              '</button>';
+    });
+    html += "</div>";
+
+    return html;
+  }
+
+  function renderJourDetail(key){
+    var jour = state.jours[key];
+    var html = "";
+    if(!jour){
+      html += brandHeader("Historique");
+      html += '<button type="button" class="back-link" data-action="retour-historique">‹ Retour à l’historique</button>';
+      html += '<div class="card"><div class="empty-note">Ce jour n’existe plus.</div></div>';
+      return html;
+    }
+
+    var totalCharges = jour.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+    var solde = jour.recette - totalCharges;
+    var enPerte = solde < 0;
+    var recouvrees = creancesRecouvreesDe(jour);
+
+    html += brandHeader(formatDateLabel(key));
+    html += '<button type="button" class="back-link" data-action="retour-historique">‹ Retour à l’historique</button>';
+    html += '<div class="readonly-tag">Lecture seule</div>';
+
+    html += '<div class="card solde-card">';
+    if(enPerte){
+      html += '<div class="solde-label">Ce jour-là</div>';
+      html += '<div class="solde-value perte">Jour à perte : ' + formatFCFA(Math.abs(solde)) + "</div>";
+    }else{
+      html += '<div class="solde-label">Solde net du jour</div>';
+      html += '<div class="solde-value positif">' + formatFCFA(solde) + "</div>";
+    }
+    html += '<div class="stat-row">';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div></div>';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(totalCharges) + '</div><div class="stat-label">Charges (' + jour.charges.length + ")</div></div>";
+    html += "</div>";
+    html += "</div>";
+
+    html += '<div class="section-title">Charges de la journée</div>';
+    if(jour.charges.length === 0){
+      html += '<div class="card"><div class="empty-note">Aucune charge ce jour-là.</div></div>';
+    }else{
+      html += '<div class="charge-list">';
+      jour.charges.slice().reverse().forEach(function(c){
+        var r = findRubrique(c.rubriqueId);
+        var icone = r ? r.icone : "❓";
+        var couleur = r ? r.couleur : "#8a94a6";
+        var nom = r ? r.nom : "Rubrique supprimée";
+        var heure = formatHeure(c.ts);
+        html += '<div class="charge-row">' +
+                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
+                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span><br><span class="charge-heure">' + heure + "</span></span>" +
+                  '<span class="charge-montant">-' + formatFCFA(c.montant) + "</span>" +
+                "</div>";
+      });
+      html += "</div>";
+    }
+
+    if(recouvrees.length > 0){
+      var totalRecouvre = recouvrees.reduce(function(s,r){ return s + r.montant; }, 0);
+      html += '<div class="section-title" style="margin-top:18px;">Créances recouvrées ce jour-là (' + formatFCFA(totalRecouvre) + ')</div>';
+      html += '<div class="creance-list">';
+      recouvrees.forEach(function(cr){
+        var creanceOrigine = findCreance(cr.creanceId);
+        var nom = creanceOrigine ? creanceOrigine.nom : "Client";
+        html += '<div class="creance-row payee">' +
+                  '<span class="creance-info"><span class="creance-nom">' + escapeHtml(nom) + '</span></span>' +
+                  '<span class="creance-montant">' + formatFCFA(cr.montant) + '</span>' +
+                '</div>';
+      });
+      html += "</div>";
+    }
+
+    return html;
+  }
+
+  // --- Écran Réglages (F11) ---
+
+  function renderReglages(){
+    var html = "";
+    html += brandHeader("Réglages");
+    html += '<button type="button" class="back-link" data-action="fermer-ecran-secondaire">‹ Retour</button>';
+
+    // Statut et cotisation
+    html += '<div class="settings-section-title">Statut et cotisation</div>';
+    html += '<div class="card">';
+    var statuts = [
+      { id:"salarie", titre:"Salarié à commission" },
+      { id:"locataire", titre:"Locataire de ma place" },
+      { id:"independant", titre:"Indépendant à domicile" }
+    ];
+    html += '<div class="choice-list">';
+    statuts.forEach(function(s){
+      var sel = state.config.statut === s.id;
+      html += '<button type="button" class="choice' + (sel ? " selected" : "") + '" data-action="reglages-choisir-statut" data-id="' + s.id + '">' +
+                '<span class="choice-dot"></span>' +
+                '<span class="choice-txt"><strong>' + s.titre + '</strong></span>' +
+              "</button>";
+    });
+    html += "</div>";
+    if(state.config.statut === "locataire"){
+      html += '<div class="field">' +
+                '<label>Montant habituel de la cotisation</label>' +
+                '<div class="amount-field">' +
+                  '<input type="tel" inputmode="numeric" id="input-reglages-cotisation" value="' + escapeHtml(ui.reglagesCotisationSaisie) + '">' +
+                  '<span class="amount-suffix">F</span>' +
+                "</div>" +
+              "</div>";
+      html += '<button type="button" class="btn btn-secondary" style="margin-top:10px;" data-action="reglages-enregistrer-cotisation">Enregistrer le montant</button>';
+    }
+    html += "</div>";
+
+    // Rubriques
+    html += '<div class="settings-section-title">Rubriques de charges</div>';
+    html += '<div class="card">';
+    var actives = rubriquesActives().length;
+    html += '<div class="rubrique-grid">';
+    state.config.rubriques.forEach(function(r){
+      html += '<div class="rubrique-item' + (r.actif ? " selected" : "") + (r.perso ? " perso-tag" : "") + '" data-action="reglages-toggle-rubrique" data-id="' + r.id + '">' +
+               '<span class="rubrique-check"></span>' +
+               '<span class="rubrique-icon" style="background:' + r.couleur + '22;color:' + r.couleur + ';">' + r.icone + "</span>" +
+               '<span class="rubrique-nom">' + escapeHtml(r.nom) + "</span>" +
+             "</div>";
+    });
+    html += "</div>";
+    if(actives > MAX_RUBRIQUES_CONSEILLE){
+      html += '<div class="soft-msg">Trop de rubriques tue le suivi. Vous avez ' + actives + ' rubriques actives — gardez l’essentiel pour aller vite entre deux clients.</div>';
+    }
+    if(!ui.ajoutRubriquePerso){
+      html += '<button type="button" class="add-rubrique-btn" data-action="ouvrir-ajout-perso">+ Ajouter une rubrique personnalisée</button>';
+    }else{
+      html += renderFormulairePerso();
+    }
+    html += "</div>";
+
+    // PIN
+    html += '<div class="settings-section-title">Code PIN à l’ouverture</div>';
+    html += '<div class="card">';
+    if(ui.reglagesPinEtape){
+      html += renderReglagesPinFlow();
+    }else if(state.config.pinActif){
+      html += '<div class="settings-row">' +
+                '<div class="settings-row-txt"><div class="settings-row-label">Code activé</div><div class="settings-row-val">Demandé à chaque ouverture de l’application.</div></div>' +
+                '<span class="settings-pill on">Activé</span>' +
+              "</div>";
+      html += '<div class="btn-row" style="margin-top:6px;">';
+      html += '<button type="button" class="btn btn-secondary" data-action="reglages-pin-modifier">Modifier le code</button>';
+      html += '<button type="button" class="btn btn-ghost" data-action="reglages-pin-desactiver">Désactiver</button>';
+      html += "</div>";
+    }else{
+      html += '<div class="settings-row">' +
+                '<div class="settings-row-txt"><div class="settings-row-label">Code désactivé</div><div class="settings-row-val">L’application s’ouvre directement, sans code.</div></div>' +
+                '<span class="settings-pill off">Désactivé</span>' +
+              "</div>";
+      html += '<button type="button" class="btn btn-primary" style="margin-top:10px;" data-action="reglages-pin-activer">Activer un code à 4 chiffres</button>';
+    }
+    html += "</div>";
+
+    // Sauvegarde et restauration
+    html += '<div class="settings-section-title">Sauvegarde et restauration</div>';
+    html += '<div class="card">';
+    html += renderSauvegardeSection();
+    html += "</div>";
+
+    // À propos
+    html += '<button type="button" class="settings-link-row" data-action="ouvrir-apropos">À propos<span class="settings-chevron">›</span></button>';
+
+    return html;
+  }
+
+  function renderReglagesPinFlow(){
+    var titre = ui.reglagesPinEtape === "saisie-1" ? "Choisissez un code à 4 chiffres" : "Confirmez le code";
+    var html = '<div class="settings-row-label">' + titre + '</div>';
+    html += '<div class="pin-dots" style="margin:16px 0 6px 0;">';
+    for(var i=0;i<4;i++){
+      html += '<span class="pin-dot' + (i < ui.pinSaisie.length ? " rempli" : "") + '"></span>';
+    }
+    html += "</div>";
+    if(ui.reglagesPinErreur){
+      html += '<div class="pin-erreur-msg" style="height:auto;margin-bottom:8px;">' + escapeHtml(ui.reglagesPinErreur) + '</div>';
+    }
+    html += renderPinClavier("reglages-pin-toucher-chiffre", "reglages-pin-effacer-chiffre");
+    html += '<button type="button" class="btn btn-ghost" style="margin-top:16px;" data-action="reglages-pin-annuler">Annuler</button>';
+    return html;
+  }
+
+  function renderSauvegardeSection(){
+    var html = '<div class="muted">Vos données restent uniquement sur ce téléphone. Si vous changez d’appareil ou effacez les données de Chrome, elles sont perdues — sauf si vous avez une sauvegarde.</div>';
+
+    html += '<div class="backup-info">';
+    if(state.meta.derniereSauvegarde){
+      var jrs = joursDepuis(state.meta.derniereSauvegarde);
+      var quand = jrs === 0 ? "aujourd’hui" : (jrs === 1 ? "hier" : "il y a " + jrs + " jours");
+      html += '<strong>Dernière sauvegarde</strong> : ' + formatDateCourte(state.meta.derniereSauvegarde) + " (" + quand + ")";
+    }else{
+      html += '<strong>Aucune sauvegarde</strong> pour l’instant.';
+    }
+    html += "</div>";
+
+    html += '<button type="button" class="btn btn-primary" style="margin-top:14px;" data-action="sauvegarder-donnees">💾 Sauvegarder mes données</button>';
+
+    html += '<div class="settings-section-title" style="margin:18px 2px 8px 2px;">Restaurer une sauvegarde</div>';
+
+    if(ui.restaurationFichier){
+      var nb = nombreJoursEnregistres(ui.restaurationFichier.jours);
+      html += '<div class="soft-msg">Ce fichier contient ' + nb + (nb > 1 ? " journées enregistrées" : " journée enregistrée") + '. Restaurer remplacera toutes les données actuelles de cet appareil.</div>';
+      html += '<div class="btn-row">';
+      html += '<button type="button" class="btn btn-ghost" data-action="annuler-restauration">Annuler</button>';
+      html += '<button type="button" class="btn btn-primary" data-action="confirmer-restauration">Confirmer la restauration</button>';
+      html += "</div>";
+    }else{
+      html += '<label class="btn btn-secondary">📂 Choisir un fichier de sauvegarde<input type="file" id="input-restauration" accept="application/json,.json"></label>';
+      if(ui.restaurationErreur){
+        html += '<div class="soft-msg" style="border-color:#4a2b28;color:#ff9b90;">' + escapeHtml(ui.restaurationErreur) + '</div>';
+      }
+    }
+    return html;
+  }
+
+  // --- Écran Partager (F9) ---
+
+  function renderPartager(){
+    var html = "";
+    html += brandHeader("Partager");
+    html += '<button type="button" class="back-link" data-action="fermer-ecran-secondaire">‹ Retour</button>';
+
+    html += '<div class="etat-tabs">';
+    [["jour","Jour"],["semaine","Semaine"],["mois","Mois"]].forEach(function(m){
+      html += '<button type="button" class="etat-tab' + (ui.partagerMode === m[0] ? " active" : "") + '" data-action="partager-mode" data-mode="' + m[0] + '">' + m[1] + '</button>';
+    });
+    html += "</div>";
+
+    if(ui.partagerMode !== "jour"){
+      html += '<div class="etat-period-nav">';
+      html += '<button type="button" data-action="partager-precedent" aria-label="Période précédente">‹</button>';
+      html += '<div class="etat-period-label">' + labelPeriode(ui.partagerMode, ui.partagerOffset) + '</div>';
+      html += '<button type="button" data-action="partager-suivant" aria-label="Période suivante"' + (ui.partagerOffset >= 0 ? " disabled" : "") + '>›</button>';
+      html += "</div>";
+    }else{
+      html += '<div class="muted" style="margin-bottom:14px;">' + formatDateLabel(todayKey()) + '</div>';
+    }
+
+    html += '<div class="partage-preview-wrap"><canvas id="partage-canvas" class="partage-canvas" width="1080" height="1040"></canvas></div>';
+
+    html += '<button type="button" class="btn btn-primary" data-action="partager-generer">📤 Partager cette image</button>';
+    html += '<div class="muted" style="margin-top:10px;text-align:center;">À montrer au salon, ou à l’appui d’une demande de financement. L’image se partage ou s’enregistre sur le téléphone, sans connexion.</div>';
+
+    return html;
+  }
+
+  function donneesPartage(mode, offset){
+    var enCoursListe = creancesEnCours();
+    var enCoursTotal = sommeCreancesEnCours();
+    if(mode === "jour"){
+      var jour = ensureJour();
+      var totalCharges = jour.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+      var solde = jour.recette - totalCharges;
+      return {
+        titre: formatDateLabel(todayKey()),
+        nbClients: jour.clients.length,
+        recette: jour.recette,
+        charges: totalCharges,
+        solde: solde,
+        enPerte: solde < 0,
+        creancesEnCoursTotal: enCoursTotal,
+        creancesEnCoursNb: enCoursListe.length
+      };
+    }
+    var e = calculerEtat(mode, offset);
+    return {
+      titre: labelPeriode(mode, offset),
+      nbClients: e.nbClients,
+      recette: e.recetteTotale,
+      charges: e.chargesTotal,
+      solde: e.soldeNetCumule,
+      enPerte: e.soldeNetCumule < 0,
+      creancesEnCoursTotal: enCoursTotal,
+      creancesEnCoursNb: enCoursListe.length
+    };
+  }
+
+  function dessinerCanvasPartage(){
+    var canvas = document.getElementById("partage-canvas");
+    if(!canvas) return;
+    var d = donneesPartage(ui.partagerMode, ui.partagerOffset);
+    try{
+      dessinerImagePartage(canvas, d);
+    }catch(e){
+      // le rendu de l'aperçu ne doit jamais bloquer l'écran
+    }
+  }
+
+  function roundRectCompat(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    if(ctx.roundRect){
+      ctx.roundRect(x, y, w, h, r);
+    }else{
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+  }
+
+  // Réduit la taille de police jusqu'à ce que le texte tienne dans la largeur disponible.
+  function ajusterTaillePolice(ctx, texte, largeurMax, tailleDepart){
+    var taille = tailleDepart;
+    while(taille > 34){
+      ctx.font = "800 " + taille + "px -apple-system,Helvetica,Arial,sans-serif";
+      if(ctx.measureText(texte).width <= largeurMax) break;
+      taille -= 4;
+    }
+    return taille;
+  }
+
+  function dessinerStatBloc(ctx, x, y, largeur, label, valeur){
+    ctx.fillStyle = "#1a1f29";
+    roundRectCompat(ctx, x, y, largeur, 140, 18);
+    ctx.fill();
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#f5f6f8";
+    ctx.font = "800 34px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText(valeur, x + 22, y + 58);
+    ctx.fillStyle = "#9aa3b2";
+    ctx.font = "500 21px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText(label, x + 22, y + 96);
+  }
+
+  // Calcule la hauteur nécessaire pour ne pas laisser un grand vide sous le contenu
+  // (la créance en cours n'est pas toujours affichée).
+  function calculerHauteurPartage(d){
+    var y = 96 + 168 + 78;
+    if(!d.enPerte){ y += 44; }
+    y += 60 + 66;
+    var fin = y + 140;
+    if(d.creancesEnCoursTotal > 0){
+      fin = y + 168 + 112;
+    }
+    return fin + 110;
+  }
+
+  function dessinerImagePartage(canvas, d){
+    canvas.height = calculerHauteurPartage(d);
+    var ctx = canvas.getContext("2d");
+    var w = canvas.width, h = canvas.height;
+    var marge = 70;
+
+    var grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "#161b25");
+    grad.addColorStop(1, "#0d0f14");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    var y = 96;
+    ctx.fillStyle = "#f5a623";
+    roundRectCompat(ctx, marge, y, 78, 78, 20);
+    ctx.fill();
+    ctx.fillStyle = "#241a06";
+    ctx.font = "800 42px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("S", marge + 39, y + 41);
+
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = "#f5f6f8";
+    ctx.font = "800 36px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText("MonDjai/Salon H", marge + 100, y + 34);
+    ctx.fillStyle = "#9aa3b2";
+    ctx.font = "400 24px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText("Chaque coupe compte.", marge + 100, y + 68);
+
+    y += 168;
+    ctx.fillStyle = "#9aa3b2";
+    ctx.font = "700 27px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText(d.titre, marge, y);
+
+    y += 78;
+    var texteSolde = d.enPerte ? "Jour à perte : " + formatFCFA(Math.abs(d.solde)) : formatFCFA(d.solde);
+    ctx.fillStyle = d.enPerte ? "#ff6b5e" : "#34b37e";
+    var taillePolice = ajusterTaillePolice(ctx, texteSolde, w - marge*2, 84);
+    ctx.font = "800 " + taillePolice + "px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText(texteSolde, marge, y);
+
+    if(!d.enPerte){
+      y += 44;
+      ctx.fillStyle = "#9aa3b2";
+      ctx.font = "600 25px -apple-system,Helvetica,Arial,sans-serif";
+      ctx.fillText("Solde net", marge, y);
+    }
+
+    y += 60;
+    ctx.strokeStyle = "#2a3040";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(marge, y);
+    ctx.lineTo(w - marge, y);
+    ctx.stroke();
+
+    y += 66;
+    var colLargeur = (w - marge*2 - 24) / 2;
+    dessinerStatBloc(ctx, marge, y, colLargeur, "Recette (" + d.nbClients + (d.nbClients > 1 ? " clients)" : " client)"), formatFCFA(d.recette));
+    dessinerStatBloc(ctx, marge + colLargeur + 24, y, colLargeur, "Charges", formatFCFA(d.charges));
+
+    y += 168;
+    if(d.creancesEnCoursTotal > 0){
+      ctx.fillStyle = "#241d0e";
+      roundRectCompat(ctx, marge, y, w - marge*2, 112, 20);
+      ctx.fill();
+      ctx.fillStyle = "#e8c77a";
+      ctx.textAlign = "left";
+      ctx.font = "700 27px -apple-system,Helvetica,Arial,sans-serif";
+      ctx.fillText(d.creancesEnCoursNb + (d.creancesEnCoursNb > 1 ? " créances en cours" : " créance en cours"), marge + 28, y + 42);
+      ctx.font = "800 32px -apple-system,Helvetica,Arial,sans-serif";
+      ctx.fillText(formatFCFA(d.creancesEnCoursTotal) + " à recouvrer", marge + 28, y + 84);
+    }
+
+    ctx.fillStyle = "#6b7385";
+    ctx.font = "400 22px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Généré le " + formatDateCourte(todayKey()) + " avec MonDjai/Salon H", w/2, h - 54);
+  }
+
+  function genererEtPartagerImage(){
+    var canvas = document.getElementById("partage-canvas");
+    if(!canvas || !canvas.toBlob){ return; }
+    var mode = ui.partagerMode;
+    var nomFichier = "mondjai-salonh-partage-" + mode + "-" + todayKey() + ".png";
+    canvas.toBlob(function(blob){
+      if(!blob) return;
+      var fichier = null;
+      try{ fichier = new File([blob], nomFichier, { type: "image/png" }); }catch(e){ fichier = null; }
+      if(fichier && window.navigator && navigator.canShare && navigator.share && navigator.canShare({ files: [fichier] })){
+        navigator.share({ files: [fichier], title: "MonDjai/Salon H" }).catch(function(){
+          telechargerBlobImage(blob, nomFichier);
+        });
+      }else{
+        telechargerBlobImage(blob, nomFichier);
+      }
+    }, "image/png");
+  }
+
+  function telechargerBlobImage(blob, nomFichier){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = nomFichier;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  // --- Écran À propos ---
+
+  function renderApropos(){
+    var html = "";
+    html += brandHeader("À propos");
+    html += '<button type="button" class="back-link" data-action="retour-reglages">‹ Retour aux réglages</button>';
+    html += '<div class="card">';
+    html += '<div class="about-mark">S</div>';
+    html += '<div class="about-mission">MonDjai/Salon H aide chaque coiffeur à connaître sa recette, ses charges et ce qu’il lui reste vraiment — en quelques secondes, entre deux clients.</div>';
+    html += '<div class="about-tagline">« Chaque coupe compte. »</div>';
+    html += '<div class="muted" style="text-align:center;">Vos données restent sur ce téléphone. L’application fonctionne entièrement sans connexion internet.</div>';
+    html += "</div>";
+    html += '<div class="card"><div class="muted">MonDjai/Salon H · Version 1.0</div></div>';
+    return html;
+  }
+
+  // --- Modales ---
+
+  function renderModal(){
+    if(ui.modal === "client") return renderModalClient();
+    if(ui.modal === "charge-grid") return renderModalChargeGrille();
+    if(ui.modal === "charge-montant") return renderModalChargeMontant();
+    if(ui.modal === "charge-edit") return renderModalChargeEdit();
+    if(ui.modal === "creance-ajout") return renderModalCreanceAjout();
+    return "";
+  }
+
+  function renderModalClient(){
+    var montant = parseMontant(ui.clientMontant);
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Client encaissé</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    html += '<div class="field" style="margin-top:0;">' +
+              '<label>Montant du service</label>' +
+              '<div class="amount-field">' +
+                '<input type="tel" inputmode="numeric" id="input-client-montant" placeholder="Ex. 1 000" value="' + escapeHtml(ui.clientMontant) + '" autofocus>' +
+                '<span class="amount-suffix">F</span>' +
+              "</div>" +
+            "</div>";
+    html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="valider-client"' + (montant > 0 ? "" : " disabled") + '>Ajouter à la recette</button>';
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderModalChargeGrille(){
+    var actives = rubriquesActives();
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Ajouter une charge</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+
+    if(actives.length === 0){
+      html += '<div class="empty-note">Aucune rubrique active. Ajoutez-en depuis la configuration initiale.</div>';
+    }else{
+      html += '<div class="modal-rubrique-grid">';
+      actives.forEach(function(r){
+        html += '<div class="modal-rubrique-item" data-action="choisir-rubrique-charge" data-id="' + r.id + '">' +
+                  '<span class="modal-rubrique-icon" style="background:' + r.couleur + '22;color:' + r.couleur + ';">' + r.icone + "</span>" +
+                  '<span class="modal-rubrique-nom">' + escapeHtml(r.nom) + "</span>" +
+                "</div>";
+      });
+      html += "</div>";
+    }
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderModalChargeMontant(){
+    var r = findRubrique(ui.chargeRubriqueId);
+    var montant = parseMontant(ui.chargeMontant);
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Montant de la charge</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    html += '<button type="button" class="back-link" data-action="retour-charge-grille">‹ Changer de rubrique</button>';
+    if(r){
+      html += '<div class="selected-rubrique-preview">' +
+                '<span class="charge-icon" style="background:' + r.couleur + '22;color:' + r.couleur + ';">' + r.icone + "</span>" +
+                '<strong>' + escapeHtml(r.nom) + "</strong>" +
+              "</div>";
+    }
+    html += '<div class="field" style="margin-top:0;">' +
+              '<label>Montant</label>' +
+              '<div class="amount-field">' +
+                '<input type="tel" inputmode="numeric" id="input-charge-montant" placeholder="Ex. 500" value="' + escapeHtml(ui.chargeMontant) + '" autofocus>' +
+                '<span class="amount-suffix">F</span>' +
+              "</div>" +
+            "</div>";
+    html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="valider-charge"' + (montant > 0 ? "" : " disabled") + '>Enregistrer la charge</button>';
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderModalChargeEdit(){
+    var jour = ensureJour();
+    var c = findChargeDuJour(jour, ui.chargeEditId);
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Modifier la charge</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+
+    if(!c){
+      html += '<div class="empty-note">Cette charge n’existe plus.</div></div></div>';
+      return html;
+    }
+
+    var r = findRubrique(c.rubriqueId);
+    var montant = parseMontant(ui.chargeEditMontant);
+    if(r){
+      html += '<div class="selected-rubrique-preview">' +
+                '<span class="charge-icon" style="background:' + r.couleur + '22;color:' + r.couleur + ';">' + r.icone + "</span>" +
+                '<strong>' + escapeHtml(r.nom) + "</strong>" +
+              "</div>";
+    }
+    html += '<div class="field" style="margin-top:0;">' +
+              '<label>Montant</label>' +
+              '<div class="amount-field">' +
+                '<input type="tel" inputmode="numeric" id="input-charge-edit-montant" placeholder="Ex. 500" value="' + escapeHtml(ui.chargeEditMontant) + '" autofocus>' +
+                '<span class="amount-suffix">F</span>' +
+              "</div>" +
+            "</div>";
+    html += '<div class="btn-row">';
+    html += '<button type="button" class="btn btn-danger-outline" data-action="supprimer-charge">Supprimer</button>';
+    html += '<button type="button" class="btn btn-primary" data-action="valider-modif-charge"' + (montant > 0 ? "" : " disabled") + '>Enregistrer</button>';
+    html += "</div>";
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderModalCreanceAjout(){
+    var montant = parseMontant(ui.creanceMontant);
+    var peutValider = ui.creanceNom.trim().length > 0 && montant > 0;
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Client à crédit</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    html += '<div class="muted" style="margin-bottom:4px;">« Je paie la prochaine fois » — ce montant rejoindra la recette du jour où il sera réellement encaissé.</div>';
+    html += '<div class="field">' +
+              '<label>Nom ou surnom du client</label>' +
+              '<input type="text" id="input-creance-nom" placeholder="Ex. Le grand, Fatou…" value="' + escapeHtml(ui.creanceNom) + '" autofocus>' +
+            "</div>";
+    html += '<div class="field">' +
+              '<label>Montant dû</label>' +
+              '<div class="amount-field">' +
+                '<input type="tel" inputmode="numeric" id="input-creance-montant" placeholder="Ex. 1 000" value="' + escapeHtml(ui.creanceMontant) + '">' +
+                '<span class="amount-suffix">F</span>' +
+              "</div>" +
+            "</div>";
+    html += '<div class="field">' +
+              '<label>Date</label>' +
+              '<input type="date" id="input-creance-date" value="' + escapeHtml(ui.creanceDate) + '">' +
+            "</div>";
+    html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="valider-creance"' + (peutValider ? "" : " disabled") + '>Enregistrer la créance</button>';
+    html += "</div></div>";
+    return html;
+  }
+
+  // ---------- Aides ----------
+
+  function escapeHtml(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+
+  function parseMontant(str){
+    if(str == null) return 0;
+    var digits = String(str).replace(/[^\d]/g, "");
+    if(!digits) return 0;
+    return parseInt(digits, 10);
+  }
+
+  // ---------- Gestion des evenements ----------
+
+  function attachHandlers(){
+    app.onclick = function(e){
+      var el = e.target.closest("[data-action]");
+      if(!el) return;
+      var action = el.getAttribute("data-action");
+      if(action.indexOf("backdrop") !== -1 && e.target.closest("[data-stop]")){
+        return; // le clic a eu lieu à l'intérieur de la feuille, pas sur le fond
+      }
+      handleAction(action, el, e);
+    };
+
+    app.oninput = function(e){
+      var t = e.target;
+      if(t.id === "input-cotisation"){
+        ui.cotisationSaisie = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-perso-nom"){
+        ui.persoNom = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-client-montant"){
+        ui.clientMontant = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-charge-montant"){
+        ui.chargeMontant = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-charge-edit-montant"){
+        ui.chargeEditMontant = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-creance-nom"){
+        ui.creanceNom = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-creance-montant"){
+        ui.creanceMontant = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-creance-date"){
+        ui.creanceDate = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-objectif-montant"){
+        ui.objectifMontantSaisi = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-reglages-cotisation"){
+        ui.reglagesCotisationSaisie = t.value;
+        renderKeepFocus(t);
+      }
+    };
+
+    app.onchange = function(e){
+      var t = e.target;
+      if(t.id === "input-restauration" && t.files && t.files[0]){
+        lireFichierRestauration(t.files[0]);
+      }
+    };
+  }
+
+  function lireFichierRestauration(fichier){
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var parsed;
+      try{
+        parsed = JSON.parse(ev.target.result);
+      }catch(err){
+        parsed = null;
+      }
+      if(!parsed || typeof parsed !== "object" || typeof parsed.jours !== "object" || parsed.jours === null){
+        ui.restaurationFichier = null;
+        ui.restaurationErreur = "Ce fichier ne ressemble pas à une sauvegarde MonDjai/Salon H valide.";
+      }else{
+        ui.restaurationFichier = parsed;
+        ui.restaurationErreur = "";
+      }
+      render();
+    };
+    reader.onerror = function(){
+      ui.restaurationFichier = null;
+      ui.restaurationErreur = "Impossible de lire ce fichier.";
+      render();
+    };
+    reader.readAsText(fichier);
+  }
+
+  // Pour éviter de perdre le focus/le curseur lors d'une saisie, on ne
+  // ré-affiche que si nécessaire (activation/désactivation d'un bouton),
+  // en remettant le focus et la position du curseur sur le même champ.
+  function renderKeepFocus(inputEl){
+    var id = inputEl.id;
+    var selStart = inputEl.selectionStart;
+    var selEnd = inputEl.selectionEnd;
+    render();
+    var again = document.getElementById(id);
+    if(again){
+      again.focus();
+      try{ again.setSelectionRange(selStart, selEnd); }catch(e){}
+    }
+  }
+
+  function handleAction(action, el){
+    switch(action){
+
+      case "choisir-statut":
+        ui.statutChoisi = el.getAttribute("data-id");
+        render();
+        break;
+
+      case "continuer-statut":
+        if(el.hasAttribute("disabled")) return;
+        state.config.statut = ui.statutChoisi;
+        if(ui.statutChoisi === "locataire"){
+          state.config.cotisationHabituelle = parseMontant(ui.cotisationSaisie);
+        }else{
+          state.config.cotisationHabituelle = null;
+        }
+        saveState();
+        ui.onboardingStep = "rubriques";
+        ui.rubriquesDraft = null;
+        render();
+        break;
+
+      case "retour-statut":
+        ui.onboardingStep = "statut";
+        render();
+        break;
+
+      case "toggle-rubrique-draft":
+        var idx = parseInt(el.getAttribute("data-idx"), 10);
+        if(ui.rubriquesDraft[idx]){
+          ui.rubriquesDraft[idx].actif = !ui.rubriquesDraft[idx].actif;
+        }
+        render();
+        break;
+
+      case "ouvrir-ajout-perso":
+        ui.ajoutRubriquePerso = true;
+        ui.ajoutRubriqueContexte = (ui.page === "reglages") ? "reglages" : "onboarding";
+        ui.persoNom = "";
+        ui.persoIcone = EMOJI_SUGGESTIONS[0];
+        ui.persoCouleur = COULEUR_SUGGESTIONS[0];
+        render();
+        break;
+
+      case "annuler-ajout-perso":
+        ui.ajoutRubriquePerso = false;
+        render();
+        break;
+
+      case "choisir-emoji-perso":
+        ui.persoIcone = el.getAttribute("data-emoji");
+        render();
+        break;
+
+      case "choisir-couleur-perso":
+        ui.persoCouleur = el.getAttribute("data-couleur");
+        render();
+        break;
+
+      case "valider-ajout-perso":
+        if(el.hasAttribute("disabled")) return;
+        var nouvelleRubriquePerso = {
+          id: uid("perso"),
+          nom: ui.persoNom.trim(),
+          icone: ui.persoIcone,
+          couleur: ui.persoCouleur,
+          actif: true,
+          perso: true
+        };
+        if(ui.ajoutRubriqueContexte === "reglages"){
+          state.config.rubriques.push(nouvelleRubriquePerso);
+          saveState();
+        }else{
+          ui.rubriquesDraft.push(nouvelleRubriquePerso);
+        }
+        ui.ajoutRubriquePerso = false;
+        render();
+        break;
+
+      case "terminer-onboarding":
+        state.config.rubriques = ui.rubriquesDraft.map(function(r){ return Object.assign({}, r); });
+        if(state.config.statut === "locataire" && state.config.cotisationHabituelle){
+          state.dernierMontant.cotisation = state.config.cotisationHabituelle;
+        }
+        state.config.onboardingComplete = true;
+        saveState();
+        ensureJour();
+        saveState();
+        ui.onboardingStep = null;
+        render();
+        break;
+
+      case "ouvrir-client":
+        ui.modal = "client";
+        ui.clientMontant = "";
+        render();
+        break;
+
+      case "ouvrir-charge-grille":
+        ui.modal = "charge-grid";
+        render();
+        break;
+
+      case "choisir-rubrique-charge":
+        ui.chargeRubriqueId = el.getAttribute("data-id");
+        var precedent = state.dernierMontant[ui.chargeRubriqueId];
+        ui.chargeMontant = precedent ? String(precedent) : "";
+        ui.modal = "charge-montant";
+        render();
+        break;
+
+      case "retour-charge-grille":
+        ui.modal = "charge-grid";
+        render();
+        break;
+
+      case "valider-client":
+        if(el.hasAttribute("disabled")) return;
+        var montantClient = parseMontant(ui.clientMontant);
+        if(montantClient > 0){
+          var jourC = ensureJour();
+          jourC.clients.push({ montant: montantClient, ts: Date.now() });
+          jourC.recette += montantClient;
+          saveState();
+        }
+        ui.modal = null;
+        render();
+        break;
+
+      case "valider-charge":
+        if(el.hasAttribute("disabled")) return;
+        var montantCharge = parseMontant(ui.chargeMontant);
+        if(montantCharge > 0 && ui.chargeRubriqueId){
+          var jourD = ensureJour();
+          jourD.charges.push({
+            id: uid("charge"),
+            rubriqueId: ui.chargeRubriqueId,
+            montant: montantCharge,
+            ts: Date.now()
+          });
+          state.dernierMontant[ui.chargeRubriqueId] = montantCharge;
+          saveState();
+        }
+        ui.modal = null;
+        ui.chargeRubriqueId = null;
+        render();
+        break;
+
+      case "aller-page":
+        ui.page = el.getAttribute("data-page");
+        ui.modal = null;
+        if(ui.page !== "jour-detail"){
+          ui.historiqueSelection = null;
+        }
+        render();
+        break;
+
+      case "voir-jour-detail":
+        ui.historiqueSelection = el.getAttribute("data-key");
+        ui.page = "jour-detail";
+        render();
+        break;
+
+      case "retour-historique":
+        ui.historiqueSelection = null;
+        ui.page = "historique";
+        render();
+        break;
+
+      case "etat-mode":
+        ui.etatMode = el.getAttribute("data-mode");
+        ui.etatOffset = 0;
+        render();
+        break;
+
+      case "etat-precedent":
+        ui.etatOffset -= 1;
+        render();
+        break;
+
+      case "etat-suivant":
+        if(el.hasAttribute("disabled")) return;
+        if(ui.etatOffset < 0){
+          ui.etatOffset += 1;
+        }
+        render();
+        break;
+
+      case "editer-charge":
+        ui.chargeEditId = el.getAttribute("data-id");
+        var jourEC = ensureJour();
+        var chargeAModifier = findChargeDuJour(jourEC, ui.chargeEditId);
+        ui.chargeEditMontant = chargeAModifier ? String(chargeAModifier.montant) : "";
+        ui.modal = "charge-edit";
+        render();
+        break;
+
+      case "valider-modif-charge":
+        if(el.hasAttribute("disabled")) return;
+        var nouveauMontant = parseMontant(ui.chargeEditMontant);
+        if(nouveauMontant > 0){
+          var jourVM = ensureJour();
+          var chargeAMaj = findChargeDuJour(jourVM, ui.chargeEditId);
+          if(chargeAMaj){
+            chargeAMaj.montant = nouveauMontant;
+            state.dernierMontant[chargeAMaj.rubriqueId] = nouveauMontant;
+            saveState();
+          }
+        }
+        ui.modal = null;
+        ui.chargeEditId = null;
+        render();
+        break;
+
+      case "supprimer-charge":
+        var jourSC = ensureJour();
+        jourSC.charges = jourSC.charges.filter(function(c){ return c.id !== ui.chargeEditId; });
+        saveState();
+        ui.modal = null;
+        ui.chargeEditId = null;
+        render();
+        break;
+
+      case "ouvrir-ajout-creance":
+        ui.modal = "creance-ajout";
+        ui.creanceNom = "";
+        ui.creanceMontant = "";
+        ui.creanceDate = todayKey();
+        render();
+        break;
+
+      case "valider-creance":
+        if(el.hasAttribute("disabled")) return;
+        var montantCreance = parseMontant(ui.creanceMontant);
+        var nomCreance = ui.creanceNom.trim();
+        if(montantCreance > 0 && nomCreance){
+          state.creances.push({
+            id: uid("creance"),
+            nom: nomCreance,
+            montant: montantCreance,
+            date: ui.creanceDate || todayKey(),
+            statut: "en_cours",
+            ts: Date.now(),
+            datePaiement: null,
+            tsPaiement: null
+          });
+          saveState();
+        }
+        ui.modal = null;
+        render();
+        break;
+
+      case "marquer-payee":
+        var creanceAPayer = findCreance(el.getAttribute("data-id"));
+        if(creanceAPayer && creanceAPayer.statut === "en_cours"){
+          creanceAPayer.statut = "payee";
+          creanceAPayer.datePaiement = todayKey();
+          creanceAPayer.tsPaiement = Date.now();
+          var jourMP = ensureJour();
+          jourMP.creancesRecouvrees = jourMP.creancesRecouvrees || [];
+          jourMP.creancesRecouvrees.push({ creanceId: creanceAPayer.id, montant: creanceAPayer.montant, ts: Date.now() });
+          jourMP.recette += creanceAPayer.montant;
+          saveState();
+        }
+        render();
+        break;
+
+      case "supprimer-creance":
+        var idASupprimer = el.getAttribute("data-id");
+        state.creances = state.creances.filter(function(c){ return c.id !== idASupprimer; });
+        saveState();
+        render();
+        break;
+
+      // --- Mon objectif (F8) ---
+
+      case "choisir-modele-objectif":
+        ui.objectifModeleChoisi = el.getAttribute("data-id");
+        var modeleC = trouverModeleObjectif(ui.objectifModeleChoisi);
+        ui.objectifMontantSaisi = modeleC ? String(modeleC.montantSuggere) : "";
+        ui.objectifEtape = "montant";
+        render();
+        break;
+
+      case "objectif-retour-modeles":
+        ui.objectifEtape = "modeles";
+        ui.objectifModeleChoisi = null;
+        render();
+        break;
+
+      case "objectif-continuer-montant":
+        if(el.hasAttribute("disabled")) return;
+        ui.objectifEtape = "scenarios";
+        ui.objectifScenarioChoisi = null;
+        render();
+        break;
+
+      case "objectif-retour-montant":
+        ui.objectifEtape = "montant";
+        render();
+        break;
+
+      case "choisir-scenario-objectif":
+        ui.objectifScenarioChoisi = parseInt(el.getAttribute("data-pourcentage"), 10);
+        render();
+        break;
+
+      case "creer-objectif":
+        if(el.hasAttribute("disabled")) return;
+        var modeleFinal = trouverModeleObjectif(ui.objectifModeleChoisi);
+        var montantFinal = parseMontant(ui.objectifMontantSaisi);
+        if(modeleFinal && montantFinal > 0 && ui.objectifScenarioChoisi){
+          state.objectif = {
+            id: uid("objectif"),
+            modele: modeleFinal.id,
+            sousType: null,
+            nom: modeleFinal.nom,
+            montantCible: montantFinal,
+            dateCreation: todayKey(),
+            pourcentage: ui.objectifScenarioChoisi,
+            actif: true
+          };
+          saveState();
+        }
+        ui.objectifEtape = "modeles";
+        ui.objectifModeleChoisi = null;
+        ui.objectifMontantSaisi = "";
+        ui.objectifScenarioChoisi = null;
+        render();
+        break;
+
+      case "objectif-changer-rythme":
+        ui.objectifModifierRythme = true;
+        render();
+        break;
+
+      case "objectif-fermer-rythme":
+        ui.objectifModifierRythme = false;
+        render();
+        break;
+
+      case "appliquer-rythme":
+        if(state.objectif){
+          state.objectif.pourcentage = parseInt(el.getAttribute("data-pourcentage"), 10);
+          saveState();
+        }
+        ui.objectifModifierRythme = false;
+        render();
+        break;
+
+      case "objectif-proposer-reset":
+        ui.objectifConfirmationReset = true;
+        render();
+        break;
+
+      case "objectif-annuler-reset":
+        ui.objectifConfirmationReset = false;
+        render();
+        break;
+
+      case "objectif-confirmer-reset":
+        state.objectif = null;
+        saveState();
+        ui.objectifConfirmationReset = false;
+        ui.objectifModifierRythme = false;
+        render();
+        break;
+
+      // --- Réglages, Partager, À propos (F9/F11) ---
+
+      case "ouvrir-reglages":
+        if(ui.page !== "reglages" && ui.page !== "partager" && ui.page !== "apropos"){
+          ui.pagePrecedente = ui.page;
+        }
+        ui.page = "reglages";
+        ui.reglagesCotisationSaisie = state.config.cotisationHabituelle ? String(state.config.cotisationHabituelle) : "";
+        ui.reglagesPinEtape = null;
+        ui.reglagesPinTemp = "";
+        ui.reglagesPinErreur = "";
+        ui.pinSaisie = "";
+        ui.ajoutRubriquePerso = false;
+        ui.modal = null;
+        render();
+        break;
+
+      case "ouvrir-partager":
+        if(ui.page !== "reglages" && ui.page !== "partager" && ui.page !== "apropos"){
+          ui.pagePrecedente = ui.page;
+        }
+        ui.page = "partager";
+        ui.partagerMode = "jour";
+        ui.partagerOffset = 0;
+        ui.modal = null;
+        render();
+        break;
+
+      case "ouvrir-apropos":
+        ui.page = "apropos";
+        render();
+        break;
+
+      case "retour-reglages":
+        ui.page = "reglages";
+        render();
+        break;
+
+      case "fermer-ecran-secondaire":
+        ui.page = ui.pagePrecedente || "jour";
+        ui.ajoutRubriquePerso = false;
+        ui.reglagesPinEtape = null;
+        render();
+        break;
+
+      case "reglages-choisir-statut":
+        var nouveauStatut = el.getAttribute("data-id");
+        state.config.statut = nouveauStatut;
+        if(nouveauStatut !== "locataire"){
+          state.config.cotisationHabituelle = null;
+          ui.reglagesCotisationSaisie = "";
+        }else{
+          ui.reglagesCotisationSaisie = state.config.cotisationHabituelle ? String(state.config.cotisationHabituelle) : "";
+        }
+        saveState();
+        render();
+        break;
+
+      case "reglages-enregistrer-cotisation":
+        var montantCotisationReglages = parseMontant(ui.reglagesCotisationSaisie);
+        if(montantCotisationReglages > 0){
+          state.config.cotisationHabituelle = montantCotisationReglages;
+          saveState();
+        }
+        render();
+        break;
+
+      case "reglages-toggle-rubrique":
+        var rubriqueAToggle = findRubrique(el.getAttribute("data-id"));
+        if(rubriqueAToggle){
+          rubriqueAToggle.actif = !rubriqueAToggle.actif;
+          saveState();
+        }
+        render();
+        break;
+
+      case "reglages-pin-activer":
+      case "reglages-pin-modifier":
+        ui.reglagesPinEtape = "saisie-1";
+        ui.reglagesPinTemp = "";
+        ui.pinSaisie = "";
+        ui.reglagesPinErreur = "";
+        render();
+        break;
+
+      case "reglages-pin-desactiver":
+        state.config.pinActif = false;
+        saveState();
+        render();
+        break;
+
+      case "reglages-pin-annuler":
+        ui.reglagesPinEtape = null;
+        ui.reglagesPinTemp = "";
+        ui.pinSaisie = "";
+        ui.reglagesPinErreur = "";
+        render();
+        break;
+
+      case "reglages-pin-toucher-chiffre":
+        if(ui.pinSaisie.length >= 4) return;
+        ui.pinSaisie += el.getAttribute("data-chiffre");
+        if(ui.pinSaisie.length === 4){
+          if(ui.reglagesPinEtape === "saisie-1"){
+            ui.reglagesPinTemp = ui.pinSaisie;
+            ui.pinSaisie = "";
+            ui.reglagesPinEtape = "saisie-2";
+            ui.reglagesPinErreur = "";
+          }else if(ui.reglagesPinEtape === "saisie-2"){
+            if(ui.pinSaisie === ui.reglagesPinTemp){
+              state.config.pin = ui.pinSaisie;
+              state.config.pinActif = true;
+              saveState();
+              ui.reglagesPinEtape = null;
+              ui.reglagesPinTemp = "";
+              ui.pinSaisie = "";
+              ui.reglagesPinErreur = "";
+            }else{
+              ui.reglagesPinErreur = "Les codes ne correspondent pas. Recommencez.";
+              ui.reglagesPinEtape = "saisie-1";
+              ui.reglagesPinTemp = "";
+              ui.pinSaisie = "";
+            }
+          }
+        }
+        render();
+        break;
+
+      case "reglages-pin-effacer-chiffre":
+        ui.pinSaisie = ui.pinSaisie.slice(0, -1);
+        render();
+        break;
+
+      case "pin-toucher-chiffre":
+        if(ui.pinSaisie.length >= 4) return;
+        ui.pinSaisie += el.getAttribute("data-chiffre");
+        if(ui.pinSaisie.length === 4){
+          if(ui.pinSaisie === state.config.pin){
+            ui.verrouille = false;
+            ui.pinSaisie = "";
+            ui.pinErreur = false;
+            render();
+          }else{
+            ui.pinErreur = true;
+            render();
+            setTimeout(function(){
+              ui.pinSaisie = "";
+              ui.pinErreur = false;
+              render();
+            }, 500);
+          }
+          return;
+        }
+        render();
+        break;
+
+      case "pin-effacer-chiffre":
+        ui.pinSaisie = ui.pinSaisie.slice(0, -1);
+        render();
+        break;
+
+      case "ouvrir-pin-oublie":
+        ui.pinOublieConfirmation = true;
+        render();
+        break;
+
+      case "fermer-pin-oublie":
+      case "fermer-pin-oublie-backdrop":
+        ui.pinOublieConfirmation = false;
+        render();
+        break;
+
+      case "retirer-pin-oublie":
+        state.config.pinActif = false;
+        state.config.pin = null;
+        saveState();
+        ui.pinOublieConfirmation = false;
+        ui.verrouille = false;
+        ui.pinSaisie = "";
+        render();
+        break;
+
+      case "partager-mode":
+        ui.partagerMode = el.getAttribute("data-mode");
+        ui.partagerOffset = 0;
+        render();
+        break;
+
+      case "partager-precedent":
+        ui.partagerOffset -= 1;
+        render();
+        break;
+
+      case "partager-suivant":
+        if(el.hasAttribute("disabled")) return;
+        if(ui.partagerOffset < 0){
+          ui.partagerOffset += 1;
+        }
+        render();
+        break;
+
+      case "partager-generer":
+        genererEtPartagerImage();
+        break;
+
+      // --- Mes données : sauvegarde et restauration (F10) ---
+
+      case "sauvegarder-donnees":
+        telechargerSauvegarde();
+        render();
+        break;
+
+      case "rappel-plus-tard":
+        state.meta.dernierRappelSauvegarde = todayKey();
+        saveState();
+        render();
+        break;
+
+      case "annuler-restauration":
+        ui.restaurationFichier = null;
+        ui.restaurationErreur = "";
+        render();
+        break;
+
+      case "confirmer-restauration":
+        if(ui.restaurationFichier){
+          var nouvelEtat = stateDepuisImport(ui.restaurationFichier);
+          if(nouvelEtat){
+            state = nouvelEtat;
+            saveState();
+            ui.restaurationFichier = null;
+            ui.modal = null;
+            ui.page = "jour";
+            ui.historiqueSelection = null;
+            ui.objectifEtape = "modeles";
+            ui.objectifModeleChoisi = null;
+            ui.objectifMontantSaisi = "";
+            ui.objectifScenarioChoisi = null;
+            ui.objectifModifierRythme = false;
+            ui.objectifConfirmationReset = false;
+            ui.onboardingStep = state.config.onboardingComplete ? null : "statut";
+            ui.statutChoisi = state.config.statut;
+            ui.cotisationSaisie = state.config.cotisationHabituelle ? String(state.config.cotisationHabituelle) : "";
+            ui.rubriquesDraft = null;
+            ui.pagePrecedente = "jour";
+            ui.reglagesCotisationSaisie = "";
+            ui.reglagesPinEtape = null;
+            ui.reglagesPinTemp = "";
+            ui.reglagesPinErreur = "";
+            ui.pinSaisie = "";
+            ui.partagerMode = "jour";
+            ui.partagerOffset = 0;
+            // Le code PIN restauré ne verrouille qu'à la prochaine ouverture de l'application,
+            // pas immédiatement après une restauration en cours de session.
+          }
+        }
+        render();
+        break;
+
+      case "fermer-modal":
+      case "fermer-modal-backdrop":
+        ui.modal = null;
+        ui.chargeRubriqueId = null;
+        ui.chargeEditId = null;
+        render();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // ---------- Démarrage ----------
+
+  if(!state.config.onboardingComplete && ui.onboardingStep === "rubriques"){
+    initRubriquesDraft();
+  }
+
+  render();
+
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>

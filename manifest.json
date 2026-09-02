@@ -1,0 +1,28 @@
+{
+  "name": "MonDjai/Salon H",
+  "short_name": "Salon H",
+  "description": "Le carnet de recettes et de charges du coiffeur : le point du jour en quelques secondes, entre deux clients.",
+  "id": "/mondjai-salon-h/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "fr",
+  "dir": "ltr",
+  "background_color": "#11141a",
+  "theme_color": "#11141a",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
