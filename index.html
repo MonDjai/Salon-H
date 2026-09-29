@@ -7,8 +7,12 @@
 <meta name="description" content="Le carnet de recettes et de charges du coiffeur, en quelques secondes entre deux clients.">
 <meta name="theme-color" content="#11141a">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-512.png">
-<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Salon H">
+<meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Salon H">
@@ -19,7 +23,7 @@
     --bg-card-2:#20263380;
     --bg-input:#141924;
     --text:#f5f6f8;
-    --text-dim:#9aa3b2;
+    --text-dim:#b7bfcc;
     --text-dim-2:#6b7385;
     --accent:#f5a623;
     --accent-dark:#c9840f;
@@ -30,6 +34,7 @@
     --radius:18px;
     --radius-sm:12px;
   }
+  :root{color-scheme:dark;}
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
@@ -48,7 +53,7 @@
     position:relative;
   }
   h1,h2,h3,p{margin:0;}
-  button{font-family:inherit;}
+  button{font-family:inherit;color:inherit;}
   .brand{
     display:flex;
     align-items:center;
@@ -698,6 +703,59 @@
     text-align:center;color:var(--accent);font-weight:700;font-size:13.5px;
     margin-bottom:18px;
   }
+
+  /* ===== Sprint 5 (V1.1) ===== */
+  .btn:disabled{opacity:.4;pointer-events:none;}
+  /* Code d'accès */
+  .code-screen{min-height:calc(100vh - 60px);display:flex;flex-direction:column;justify-content:center;align-items:stretch;text-align:center;gap:8px;}
+  .code-lock{font-size:54px;margin-bottom:6px;}
+  .code-titre{font-size:22px;font-weight:800;}
+  .code-sous-titre{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:14px;}
+  .code-input{width:100%;background:#1c1609;border:2px solid var(--accent);border-radius:var(--radius-sm);padding:16px;font-size:22px;font-weight:800;letter-spacing:.2em;text-align:center;text-transform:uppercase;color:var(--text);outline:none;}
+  .code-erreur{color:var(--danger);font-size:13px;font-weight:600;min-height:18px;}
+  .code-mention{margin-top:22px;font-size:11.5px;color:var(--text-dim-2);line-height:1.5;}
+  /* Carte d'installation */
+  .install-card{display:flex;align-items:center;gap:12px;background:#1c1609;border:1px solid #4a3a12;border-radius:var(--radius);padding:14px;margin-bottom:14px;}
+  .install-ico{font-size:28px;flex:none;}
+  .install-txt{flex:1;min-width:0;font-size:13px;color:#e8c77a;line-height:1.4;}
+  .install-txt strong{display:block;color:var(--text);font-size:14px;margin-bottom:2px;}
+  .install-actions{display:flex;flex-direction:column;gap:6px;flex:none;}
+  .install-steps{margin:6px 0 0 0;padding-left:20px;font-size:13.5px;line-height:1.6;color:var(--text);}
+  .install-steps li{margin-bottom:6px;}
+  .install-os{font-size:13px;font-weight:800;color:var(--accent);margin-top:14px;text-transform:uppercase;letter-spacing:.04em;}
+  /* Jour de saisie */
+  .date-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-10px 0 14px 0;}
+  .date-link{position:relative;overflow:hidden;background:none;border:none;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;padding:6px 0;}
+  .date-link input[type=date]{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+  .retro-banner{background:#16233a;border:1px solid #2b4470;color:#a9c4f5;border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .retro-banner button{background:none;border:1px solid #2b4470;color:#dce8ff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;cursor:pointer;flex:none;}
+  .retro-tag{display:inline-block;font-size:10.5px;font-weight:700;color:#a9c4f5;background:#16233a;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;}
+  /* Disponible */
+  .dispo-line{margin-top:12px;font-size:13.5px;color:var(--text-dim);}
+  .dispo-line strong{color:var(--text);font-size:15px;}
+  .stat-box.clickable{cursor:pointer;border:1px solid var(--border);color:var(--text);font:inherit;}
+  .stat-box .stat-hint{font-size:10.5px;color:var(--accent);margin-top:4px;font-weight:700;}
+  /* Montants rapides */
+  .quick-row{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 16px 0;align-items:center;}
+  .quick-label{font-size:11.5px;color:var(--text-dim);width:100%;}
+  .quick-chip{background:var(--bg-input);border:1px solid #4a3a12;color:var(--accent);border-radius:999px;padding:10px 14px;font-size:14px;font-weight:800;cursor:pointer;}
+  /* Liste des clients du jour */
+  .client-row{display:flex;align-items:center;gap:12px;background:var(--bg-input);border-radius:var(--radius-sm);padding:11px 13px;cursor:pointer;width:100%;border:none;text-align:left;}
+  .client-row .client-num{width:30px;height:30px;border-radius:9px;background:#2a1f0e;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex:none;}
+  .client-row .client-info{flex:1;min-width:0;font-size:13px;color:var(--text-dim);}
+  .client-row .client-montant{font-size:15px;font-weight:800;color:var(--success);}
+  .auto-tag{font-size:10px;font-weight:800;color:var(--accent);background:var(--accent-ink);padding:2px 7px;border-radius:999px;margin-left:6px;}
+  /* Mon état : listes cliquables */
+  .hist-row.futur{opacity:.35;cursor:default;}
+  .hist-row.vide .hist-solde{color:var(--text-dim-2);}
+  .hist-chevron{color:var(--text-dim-2);margin-left:6px;}
+  .etat-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  /* Toast */
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 170px);background:#0f2a20;border:1px solid #1d4a34;color:#7fe0b4;padding:11px 16px;border-radius:999px;font-size:13.5px;font-weight:700;z-index:80;max-width:90%;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.4);}
+  .switch{width:50px;height:30px;border-radius:999px;border:none;background:var(--bg-input);position:relative;cursor:pointer;flex:none;border:1px solid var(--border);}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--text-dim-2);transition:left .15s;}
+  .switch.on{background:var(--success);border-color:var(--success);}
+  .switch.on::after{left:23px;background:#fff;}
 </style>
 </head>
 <body>
@@ -750,6 +808,10 @@
   // Rappel doux de sauvegarde (F10) au-delà de ce nombre de jours.
   var RAPPEL_SAUVEGARDE_JOURS = 7;
 
+  // V1.1 (Sprint 5A) : code d'accès commun à la famille MonDjai (comme Trépor et Salon F).
+  var CODE_ACCES = "HKETCK";
+  var VERSION_APP = "1.1";
+
   // ---------- Etat ----------
 
   function defaultState(){
@@ -761,7 +823,9 @@
         rubriques: [],              // {id, nom, icone, couleur, actif, perso}
         onboardingComplete: false,
         pinActif: false,            // F11 : code PIN optionnel à l'ouverture
-        pin: null                   // chaîne de 4 chiffres, ou null
+        pin: null,                  // chaîne de 4 chiffres, ou null
+        codeAccesOk: false,         // V1.1 : code d'accès validé une fois (jamais redemandé ensuite)
+        cotisationAuto: false       // V1.1 : cotisation ajoutée toute seule au 1er client du jour (locataire)
       },
       jours: {},                    // 'AAAA-MM-JJ' -> { date, origine, recette, clients:[], charges:[], creancesRecouvrees:[] }
       dernierMontant: {},           // { rubriqueId: montant }
@@ -769,12 +833,20 @@
       objectif: null,               // {id, modele, sousType, nom, montantCible, dateCreation, pourcentage, actif} | null (F8)
       meta: {                       // F10 : suivi de la sauvegarde JSON, pour le rappel doux
         derniereSauvegarde: null,       // 'AAAA-MM-JJ' | null
-        dernierRappelSauvegarde: null   // 'AAAA-MM-JJ' | null
+        dernierRappelSauvegarde: null,  // 'AAAA-MM-JJ' | null
+        creation: null,                 // V1.1 : 'AAAA-MM-JJ' du premier lancement
+        installCarteMasquee: false      // V1.1 : carte « Installer » repoussée par l'utilisateur
       }
     };
   }
 
   var state = loadState();
+  if(!state.meta.creation){ state.meta.creation = todayKeyBrut(); saveState(); }
+
+  function todayKeyBrut(){
+    var d = new Date();
+    return d.getFullYear() + "-" + (d.getMonth() < 9 ? "0" : "") + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
+  }
 
   function loadState(){
     try{
@@ -835,8 +907,13 @@
     return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
   }
 
-  function ensureJour(){
-    var key = todayKey();
+  // Jour sur lequel porte la saisie de l'écran Aujourd'hui (V1.1 : un jour passé peut être choisi).
+  function jourSaisieKey(){
+    return ui.jourSelection || todayKey();
+  }
+
+  function ensureJour(cle){
+    var key = cle || jourSaisieKey();
     if(!state.jours[key]){
       state.jours[key] = {
         date: key,
@@ -846,8 +923,87 @@
         charges: [],
         creancesRecouvrees: []
       };
+      if(key < todayKey()) state.jours[key].saisiApresCoup = true;
     }
     return state.jours[key];
+  }
+
+  // Lecture sans création (évite de créer des journées vides en consultant).
+  function lireJour(key){
+    return state.jours[key] || { date:key, origine:"salon-h", recette:0, clients:[], charges:[], creancesRecouvrees:[] };
+  }
+
+  function totalChargesJour(jour){
+    return (jour.charges || []).reduce(function(s,c){ return s + c.montant; }, 0);
+  }
+
+  // Recette = clients encaissés + créances recouvrées ce jour-là.
+  function recalculerRecette(jour){
+    var r = (jour.clients || []).reduce(function(s,c){ return s + c.montant; }, 0);
+    creancesRecouvreesDe(jour).forEach(function(cr){ r += cr.montant; });
+    jour.recette = r;
+  }
+
+  // Tri d'affichage (V1.1, repris de Trépor) : cotisation en tête, puis montant décroissant.
+  function trierCharges(liste){
+    return liste.slice().sort(function(a,b){
+      if(a.rubriqueId === "cotisation" && b.rubriqueId !== "cotisation") return -1;
+      if(b.rubriqueId === "cotisation" && a.rubriqueId !== "cotisation") return 1;
+      return b.montant - a.montant;
+    });
+  }
+
+  // Montants les plus récemment encaissés (4 max, distincts), pour les boutons rapides.
+  function montantsRapides(){
+    var tous = [];
+    Object.keys(state.jours).forEach(function(k){
+      (state.jours[k].clients || []).forEach(function(c){ tous.push(c); });
+    });
+    tous.sort(function(a,b){ return (b.ts||0) - (a.ts||0); });
+    var vus = [];
+    for(var i=0;i<tous.length && vus.length<4;i++){
+      if(tous[i].montant > 0 && vus.indexOf(tous[i].montant) === -1) vus.push(tous[i].montant);
+    }
+    return vus.sort(function(a,b){ return a - b; });
+  }
+
+  // Ajoute un client encaissé sur le jour de saisie (+ cotisation automatique si activée).
+  function ajouterClient(montant){
+    var jour = ensureJour();
+    var premier = jour.clients.length === 0;
+    jour.clients.push({ id: uid("client"), montant: montant, ts: Date.now() });
+    recalculerRecette(jour);
+    var cotisationAjoutee = false;
+    if(premier && state.config.cotisationAuto && state.config.statut === "locataire" && state.config.cotisationHabituelle > 0){
+      var rub = findRubrique("cotisation");
+      var dejaLa = jour.charges.some(function(c){ return c.rubriqueId === "cotisation"; });
+      if(rub && rub.actif && !dejaLa){
+        jour.charges.push({ id: uid("charge"), rubriqueId:"cotisation", montant: state.config.cotisationHabituelle, ts: Date.now(), auto:true });
+        cotisationAjoutee = true;
+      }
+    }
+    saveState();
+    return cotisationAjoutee;
+  }
+
+  // Part de l'objectif (F8) pour un jour donné — même règle que montantEpargneEstime.
+  function epargneDuJour(key){
+    var obj = state.objectif;
+    if(!obj || key < obj.dateCreation) return 0;
+    var j = lireJour(key);
+    var solde = j.recette - totalChargesJour(j);
+    return solde > 0 ? Math.round(solde * obj.pourcentage / 100) : 0;
+  }
+
+  function normaliserCode(s){
+    return String(s || "").replace(/\s+/g, "").toUpperCase();
+  }
+
+  function estInstallee(){
+    try{
+      if(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) return true;
+    }catch(e){}
+    return !!(window.navigator && window.navigator.standalone);
   }
 
   // Jours antérieurs au Sprint 2 : le tableau des créances recouvrées n'existe pas encore.
@@ -933,6 +1089,10 @@
 
   function bornesPeriode(mode, offset){
     var today = new Date();
+    if(mode === "jour"){
+      var dj = new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset);
+      return { debut: dj, fin: dj };
+    }
     if(mode === "mois"){
       var refMois = new Date(today.getFullYear(), today.getMonth() + offset, 1);
       var debut = new Date(refMois.getFullYear(), refMois.getMonth(), 1);
@@ -947,6 +1107,11 @@
 
   function labelPeriode(mode, offset){
     var b = bornesPeriode(mode, offset);
+    if(mode === "jour"){
+      if(offset === 0) return "Aujourd’hui · " + formatDateCourte(dateToKey(b.debut));
+      if(offset === -1) return "Hier · " + formatDateCourte(dateToKey(b.debut));
+      return formatDateLabel(dateToKey(b.debut));
+    }
     if(mode === "mois"){
       try{
         var s = new Intl.DateTimeFormat("fr-FR", { month:"long", year:"numeric" }).format(b.debut);
@@ -960,10 +1125,13 @@
 
   function calculerEtat(mode, offset){
     var b = bornesPeriode(mode, offset);
-    var startKey = dateToKey(b.debut);
-    var endKey = dateToKey(b.fin);
+    return calculerPlage(dateToKey(b.debut), dateToKey(b.fin));
+  }
 
+  function calculerPlage(startKey, endKey){
     var nbClients = 0;
+    var recetteClients = 0;
+    var nbJoursTravailles = 0;
     var recetteTotale = 0;
     var chargesTotal = 0;
     var chargesParRubrique = {};
@@ -974,6 +1142,8 @@
         var j = state.jours[k];
         nbClients += j.clients.length;
         recetteTotale += j.recette;
+        j.clients.forEach(function(c){ recetteClients += c.montant; });
+        if(jourADesDonnees(j)) nbJoursTravailles += 1;
         j.charges.forEach(function(c){
           chargesTotal += c.montant;
           chargesParRubrique[c.rubriqueId] = (chargesParRubrique[c.rubriqueId] || 0) + c.montant;
@@ -1000,8 +1170,24 @@
       chargesParRubrique: chargesParRubrique,
       soldeNetCumule: recetteTotale - chargesTotal,
       creancesEnCoursTotal: creancesEnCoursTotal,
-      creancesRecouvreesTotal: creancesRecouvreesTotal
+      creancesRecouvreesTotal: creancesRecouvreesTotal,
+      nbJoursTravailles: nbJoursTravailles,
+      ticketMoyen: nbClients > 0 ? Math.round(recetteClients / nbClients) : 0,
+      moyenneJour: nbJoursTravailles > 0 ? Math.round((recetteTotale - chargesTotal) / nbJoursTravailles) : 0
     };
+  }
+
+  // Première date avec des données (borne la navigation « ‹ » de Mon état et Partager).
+  function premiereDateDonnees(){
+    var cles = Object.keys(state.jours).filter(function(k){ return jourADesDonnees(state.jours[k]); }).sort();
+    return cles.length ? cles[0] : null;
+  }
+
+  function precedentPossible(mode, offset){
+    var premiere = premiereDateDonnees();
+    if(!premiere) return false;
+    var b = bornesPeriode(mode, offset);
+    return dateToKey(b.debut) > premiere;
   }
 
   // ---------- Mon objectif (F8) ----------
@@ -1099,6 +1285,37 @@
     return Object.keys(donneesJours || {}).length;
   }
 
+  function marquerSauvegardeFaite(){
+    state.meta.derniereSauvegarde = todayKey();
+    state.meta.dernierRappelSauvegarde = todayKey();
+    saveState();
+  }
+
+  // V1.1 (repris de MonDjai/Coiffure) : choix du dossier quand le navigateur le permet,
+  // sinon téléchargement classique. Une annulation volontaire ne déclenche rien.
+  function sauvegarderAvecChoixDossier(){
+    var nom = "mondjai-salonh-sauvegarde-" + todayKey() + ".json";
+    if(typeof window.showSaveFilePicker === "function"){
+      var donnees = JSON.stringify(state, null, 2);
+      window.showSaveFilePicker({
+        suggestedName: nom,
+        types: [{ description: "Sauvegarde MonDjai/Salon H", accept: { "application/json": [".json"] } }]
+      }).then(function(handle){
+        return handle.createWritable().then(function(w){
+          return w.write(donnees).then(function(){ return w.close(); });
+        });
+      }).then(function(){
+        marquerSauvegardeFaite();
+        afficherToast("Sauvegarde enregistrée.");
+      }).catch(function(err){
+        if(err && err.name === "AbortError") return;
+        if(telechargerSauvegarde()) afficherToast("Sauvegarde téléchargée.");
+      });
+      return;
+    }
+    if(telechargerSauvegarde()) afficherToast("Sauvegarde téléchargée.");
+  }
+
   function telechargerSauvegarde(){
     try{
       var donnees = JSON.stringify(state, null, 2);
@@ -1111,9 +1328,7 @@
       a.click();
       document.body.removeChild(a);
       setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-      state.meta.derniereSauvegarde = todayKey();
-      state.meta.dernierRappelSauvegarde = todayKey();
-      saveState();
+      marquerSauvegardeFaite();
       return true;
     }catch(e){
       return false;
@@ -1138,7 +1353,8 @@
     if(Object.keys(state.jours).length === 0) return false;
     var derniere = state.meta.derniereSauvegarde;
     var dernierRappel = state.meta.dernierRappelSauvegarde;
-    var joursSansSauvegarde = derniere ? joursDepuis(derniere) : 9999;
+    // V1.1 : pas de rappel pendant la première semaine d'utilisation.
+    var joursSansSauvegarde = derniere ? joursDepuis(derniere) : (state.meta.creation ? joursDepuis(state.meta.creation) : 9999);
     if(joursSansSauvegarde < RAPPEL_SAUVEGARDE_JOURS) return false;
     if(dernierRappel && joursDepuis(dernierRappel) < RAPPEL_SAUVEGARDE_JOURS) return false;
     return true;
@@ -1170,7 +1386,7 @@
     creanceMontant: "",
     creanceDate: "",
 
-    etatMode: "semaine",          // 'semaine' | 'mois'
+    etatMode: "jour",             // 'jour' | 'semaine' | 'mois' (V1.1)
     etatOffset: 0,                // 0 = période en cours, -1 = précédente, etc.
 
     historiqueSelection: null,    // clé 'AAAA-MM-JJ' du jour consulté
@@ -1205,7 +1421,17 @@
 
     // Partager (F9)
     partagerMode: "jour",          // 'jour' | 'semaine' | 'mois'
-    partagerOffset: 0
+    partagerOffset: 0,
+
+    // V1.1 (Sprint 5)
+    codeSaisie: "",
+    codeErreur: false,
+    jourSelection: null,           // null = aujourd'hui ; sinon 'AAAA-MM-JJ' d'un jour passé en saisie
+    clientEditId: null,
+    clientEditMontant: "",
+    etatSemaineOuverte: null,      // Mon état > Mois : lundi 'AAAA-MM-JJ' de la semaine ouverte
+    jourDetailRetour: "etat",
+    toast: ""
   };
 
   ui.verrouille = !!(state.config.onboardingComplete && state.config.pinActif && state.config.pin);
@@ -1227,9 +1453,16 @@
   var app = document.getElementById("app");
 
   function render(){
+    if(!state.config.codeAccesOk){
+      app.innerHTML = renderCodeAcces();
+      attachHandlers();
+      syncHistorique();
+      return;
+    }
     if(ui.verrouille){
       app.innerHTML = renderVerrouillage();
       attachHandlers();
+      syncHistorique();
       return;
     }
     if(!state.config.onboardingComplete){
@@ -1248,8 +1481,7 @@
       if(page === "creances") pageHtml = renderCreances();
       else if(page === "etat") pageHtml = renderEtat();
       else if(page === "objectif") pageHtml = renderObjectif();
-      else if(page === "historique") pageHtml = renderHistorique();
-      else if(page === "jour-detail"){ pageHtml = renderJourDetail(ui.historiqueSelection); navActive = "historique"; }
+      else if(page === "jour-detail"){ pageHtml = renderJourDetail(ui.historiqueSelection); navActive = "etat"; }
       else if(page === "reglages"){ pageHtml = renderReglages(); navActive = ui.pagePrecedente; }
       else if(page === "partager"){ pageHtml = renderPartager(); navActive = ui.pagePrecedente; }
       else if(page === "apropos"){ pageHtml = renderApropos(); navActive = ui.pagePrecedente; }
@@ -1260,10 +1492,139 @@
         app.innerHTML += renderModal();
       }
     }
+    if(ui.toast){
+      app.innerHTML += '<div class="toast" role="status">' + escapeHtml(ui.toast) + '</div>';
+    }
     attachHandlers();
     if(!ui.verrouille && ui.page === "partager"){
       dessinerCanvasPartage();
     }
+    syncHistorique();
+  }
+
+  var toastTimer = null;
+  function afficherToast(msg){
+    ui.toast = msg;
+    render();
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ ui.toast = ""; render(); }, 2200);
+  }
+
+  // ---------- Bouton retour du téléphone (V1.1, repris de Trépor Sprint 5A) ----------
+  // Une seule entrée d'historique armée à la fois : le retour ferme la couche la plus
+  // profonde (fenêtre → écran secondaire → sous-étape → onglet), jamais l'application
+  // tant qu'on n'est pas revenu sur « Aujourd'hui ».
+
+  var historiqueArme = false;
+  var ignorerProchainPop = false;
+
+  function porteEntreeActive(){
+    return !state.config.codeAccesOk || ui.verrouille || !state.config.onboardingComplete;
+  }
+
+  function uiProfonde(){
+    if(porteEntreeActive()) return false;
+    if(ui.modal) return true;
+    if(ui.page && ui.page !== "jour") return true;
+    if(ui.jourSelection) return true;
+    return false;
+  }
+
+  function syncHistorique(){
+    if(!window.history || !history.pushState) return;
+    var profonde = uiProfonde();
+    if(profonde && !historiqueArme){
+      try{ history.pushState({ salonh:1 }, ""); historiqueArme = true; }catch(e){}
+    }else if(!profonde && historiqueArme){
+      historiqueArme = false;
+      ignorerProchainPop = true;
+      try{ history.back(); }catch(e){ ignorerProchainPop = false; }
+    }
+  }
+
+  function retourArriere(){
+    if(ui.modal){
+      if(ui.modal === "client-edit"){ ui.modal = "clients-jour"; }
+      else { ui.modal = null; ui.chargeRubriqueId = null; ui.chargeEditId = null; }
+      return;
+    }
+    if(ui.page === "reglages"){
+      if(ui.ajoutRubriquePerso){ ui.ajoutRubriquePerso = false; return; }
+      if(ui.reglagesPinEtape){ ui.reglagesPinEtape = null; ui.pinSaisie = ""; return; }
+      ui.page = ui.pagePrecedente || "jour"; return;
+    }
+    if(ui.page === "apropos"){ ui.page = "reglages"; return; }
+    if(ui.page === "partager"){ ui.page = ui.pagePrecedente || "jour"; return; }
+    if(ui.page === "jour-detail"){ ui.page = ui.jourDetailRetour || "etat"; ui.historiqueSelection = null; return; }
+    if(ui.page === "etat" && ui.etatSemaineOuverte){ ui.etatSemaineOuverte = null; return; }
+    if(ui.page === "objectif"){
+      if(ui.objectifConfirmationReset){ ui.objectifConfirmationReset = false; return; }
+      if(ui.objectifModifierRythme){ ui.objectifModifierRythme = false; return; }
+      if(!state.objectif && ui.objectifEtape === "scenarios"){ ui.objectifEtape = "montant"; return; }
+      if(!state.objectif && ui.objectifEtape === "montant"){ ui.objectifEtape = "modeles"; ui.objectifModeleChoisi = null; return; }
+    }
+    if(ui.page && ui.page !== "jour"){ ui.page = "jour"; return; }
+    if(ui.jourSelection){ ui.jourSelection = null; return; }
+  }
+
+  window.addEventListener("popstate", function(){
+    if(ignorerProchainPop){ ignorerProchainPop = false; return; }
+    historiqueArme = false;
+    if(porteEntreeActive()) return;
+    retourArriere();
+    render();
+  });
+
+  // ---------- Installation sur l'écran d'accueil (V1.1) ----------
+  var invitationInstallation = null;
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault();
+    invitationInstallation = e;
+    if(state.config.codeAccesOk && !ui.verrouille) render();
+  });
+  window.addEventListener("appinstalled", function(){
+    invitationInstallation = null;
+    afficherToast("Salon H est installée sur votre écran d’accueil.");
+  });
+
+  function lancerInstallation(){
+    if(invitationInstallation){
+      var ev = invitationInstallation;
+      invitationInstallation = null;
+      try{
+        ev.prompt();
+        if(ev.userChoice){ ev.userChoice.then(function(){ render(); }, function(){ render(); }); }
+      }catch(e){ ui.modal = "installer-aide"; render(); }
+      return;
+    }
+    ui.modal = "installer-aide";
+    render();
+  }
+
+  function renderCarteInstallation(){
+    if(estInstallee() || state.meta.installCarteMasquee) return "";
+    return '<div class="install-card">' +
+             '<span class="install-ico">📲</span>' +
+             '<span class="install-txt"><strong>Installez Salon H</strong>Une icône sur l’écran d’accueil, plein écran, même sans connexion.</span>' +
+             '<span class="install-actions">' +
+               '<button type="button" class="btn-sm btn-sm-payer" data-action="installer-app">Installer</button>' +
+               '<button type="button" class="btn-sm btn-sm-annuler" data-action="installer-plus-tard">Plus tard</button>' +
+             '</span>' +
+           '</div>';
+  }
+
+  // ---------- Code d'accès (V1.1, repris de Trépor / Salon F) ----------
+  function renderCodeAcces(){
+    var html = '<div class="code-screen">';
+    html += '<div class="code-lock">🔐</div>';
+    html += '<div class="code-titre">Code d’accès</div>';
+    html += '<div class="code-sous-titre">Entrez le code reçu pour activer MonDjai/Salon H sur ce téléphone. Il ne vous sera demandé qu’une seule fois.</div>';
+    html += '<input type="text" id="input-code-acces" class="code-input" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="••••••" value="' + escapeHtml(ui.codeSaisie) + '">';
+    html += '<div class="code-erreur">' + (ui.codeErreur ? "Ce code n’est pas le bon. Vérifiez et réessayez." : "") + '</div>';
+    html += '<button type="button" class="btn btn-primary" data-action="valider-code-acces"' + (normaliserCode(ui.codeSaisie).length ? "" : " disabled") + '>Continuer</button>';
+    html += '<div class="code-mention">Application protégée. Toute reproduction ou utilisation non autorisée est interdite.</div>';
+    html += '</div>';
+    return html;
   }
 
   function renderNavBar(active){
@@ -1271,8 +1632,7 @@
       { id:"jour", icone:"🏠", label:"Aujourd’hui" },
       { id:"creances", icone:"🧾", label:"Créances" },
       { id:"etat", icone:"📊", label:"Mon état" },
-      { id:"objectif", icone:"🎯", label:"Objectif" },
-      { id:"historique", icone:"🗂️", label:"Historique" }
+      { id:"objectif", icone:"🎯", label:"Objectif" }
     ];
     var enCours = sommeCreancesEnCours();
     var html = '<nav class="navbar">';
@@ -1290,7 +1650,7 @@
   function brandHeader(sub){
     return (
       '<div class="brand">' +
-        '<div class="brand-mark">S</div>' +
+        '<div class="brand-mark">H</div>' +
         '<div class="brand-info">' +
           '<div class="brand-name">MonDjai/Salon H</div>' +
           (sub ? '<div class="brand-sub">' + sub + '</div>' : "") +
@@ -1307,7 +1667,7 @@
 
   function renderVerrouillage(){
     var html = '<div class="pin-screen' + (ui.pinErreur ? " pin-erreur" : "") + '">';
-    html += '<div class="brand-mark" style="width:48px;height:48px;font-size:22px;">S</div>';
+    html += '<div class="brand-mark" style="width:48px;height:48px;font-size:22px;">H</div>';
     html += '<div class="pin-titre">MonDjai/Salon H</div>';
     html += '<div class="pin-sous-titre">Entrez votre code à 4 chiffres</div>';
 
@@ -1476,13 +1836,28 @@
   // --- Ecran du jour ---
 
   function renderJour(){
-    var jour = ensureJour();
-    var totalCharges = jour.charges.reduce(function(s,c){ return s + c.montant; }, 0);
+    var key = jourSaisieKey();
+    var estAujourdhui = key === todayKey();
+    var jour = lireJour(key);
+    var totalCharges = totalChargesJour(jour);
     var solde = jour.recette - totalCharges;
     var enPerte = solde < 0;
 
     var html = "";
-    html += brandHeader(todayLabel());
+    html += brandHeader(estAujourdhui ? todayLabel() : formatDateLabel(key));
+
+    // Choix du jour de saisie (V1.1 : rattraper un jour oublié, jamais une date future)
+    if(estAujourdhui){
+      html += '<div class="date-row"><span></span>' +
+                '<label class="date-link">🗓️ Saisir un jour passé' +
+                  '<input type="date" id="input-jour-saisie" max="' + todayKey() + '" value="' + key + '">' +
+                '</label></div>';
+    }else{
+      html += '<div class="retro-banner"><span>Vous complétez le <strong>' + formatDateLabel(key).replace(/ \d{4}$/, "") + '</strong></span>' +
+                '<button type="button" data-action="revenir-aujourdhui">↺ Revenir à aujourd’hui</button></div>';
+    }
+
+    if(estAujourdhui) html += renderCarteInstallation();
 
     if(rappelSauvegardeActif()){
       html += '<div class="soft-msg rappel-sauvegarde">' +
@@ -1496,14 +1871,20 @@
 
     html += '<div class="card solde-card">';
     if(enPerte){
-      html += '<div class="solde-label">Aujourd’hui</div>';
+      html += '<div class="solde-label">' + (estAujourdhui ? "Aujourd’hui" : "Ce jour-là") + '</div>';
       html += '<div class="solde-value perte">Jour à perte : ' + formatFCFA(Math.abs(solde)) + "</div>";
     }else{
       html += '<div class="solde-label">Solde net du jour</div>';
       html += '<div class="solde-value positif">' + formatFCFA(solde) + "</div>";
     }
+    // F4 : Disponible = Solde net − part affectée à l'objectif (affiché seulement si un objectif est actif)
+    if(state.objectif && solde > 0 && key >= state.objectif.dateCreation){
+      var partObjectif = epargneDuJour(key);
+      html += '<div class="dispo-line">Disponible après épargne : <strong>' + formatFCFA(solde - partObjectif) + '</strong><br>' +
+                '<span style="font-size:12px;">dont ' + formatFCFA(partObjectif) + ' pour « ' + escapeHtml(state.objectif.nom) + ' »</span></div>';
+    }
     html += '<div class="stat-row">';
-    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div></div>';
+    html += '<button type="button" class="stat-box clickable" data-action="ouvrir-clients-jour"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div><div class="stat-hint">Voir / corriger ›</div></button>';
     html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(totalCharges) + '</div><div class="stat-label">Charges (' + jour.charges.length + ")</div></div>";
     html += "</div>";
 
@@ -1534,12 +1915,22 @@
 
     html += '<button type="button" class="client-btn" data-action="ouvrir-client"><span class="plus-circle">+</span> Client encaissé</button>';
 
-    html += '<div class="section-title">Charges du jour</div>';
+    // Montants rapides (V1.1) : un tap = un client encaissé à ce montant
+    var rapides = montantsRapides();
+    if(rapides.length){
+      html += '<div class="quick-row"><span class="quick-label">Montant habituel ? Un tap suffit :</span>';
+      rapides.forEach(function(m){
+        html += '<button type="button" class="quick-chip" data-action="client-rapide" data-montant="' + m + '">+ ' + formatFCFA(m) + '</button>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="section-title">Charges ' + (estAujourdhui ? "du jour" : "de ce jour") + '</div>';
     if(jour.charges.length === 0){
       html += '<div class="card"><div class="empty-note">Aucune charge notée pour l’instant.<br>Utilisez le bouton + en bas de l’écran.</div></div>';
     }else{
       html += '<div class="charge-list">';
-      jour.charges.slice().reverse().forEach(function(c){
+      trierCharges(jour.charges).forEach(function(c){
         var r = findRubrique(c.rubriqueId);
         var icone = r ? r.icone : "❓";
         var couleur = r ? r.couleur : "#8a94a6";
@@ -1547,7 +1938,7 @@
         var heure = formatHeure(c.ts);
         html += '<div class="charge-row" style="cursor:pointer;" data-action="editer-charge" data-id="' + c.id + '">' +
                   '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
-                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span><br><span class="charge-heure">' + heure + "</span></span>" +
+                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span>' + (c.auto ? '<span class="auto-tag">auto</span>' : "") + '<br><span class="charge-heure">' + heure + "</span></span>" +
                   '<span class="charge-montant">-' + formatFCFA(c.montant) + "</span>" +
                 "</div>";
       });
@@ -1630,54 +2021,52 @@
 
   // --- Ecran Mon état ---
 
+  // V1.1 : Mon état regroupe les chiffres ET l'historique (ancien onglet Historique),
+  // sur le modèle Trépor Sprint 7B : Jour (‹ › jour par jour), Semaine (→ jours),
+  // Mois (→ semaines → jours). La flèche « ‹ » s'arrête à la première journée enregistrée.
+
   function renderEtat(){
     var mode = ui.etatMode;
     var offset = ui.etatOffset;
-    var e = calculerEtat(mode, offset);
-
     var html = "";
     html += brandHeader("Mon état");
 
+    if(mode === "mois" && ui.etatSemaineOuverte){
+      return html + renderEtatSemaineDepuisMois(ui.etatSemaineOuverte);
+    }
+
     html += '<div class="etat-tabs">';
-    html += '<button type="button" class="etat-tab' + (mode === "semaine" ? " active" : "") + '" data-action="etat-mode" data-mode="semaine">Semaine</button>';
-    html += '<button type="button" class="etat-tab' + (mode === "mois" ? " active" : "") + '" data-action="etat-mode" data-mode="mois">Mois</button>';
+    [["jour","Jour"],["semaine","Semaine"],["mois","Mois"]].forEach(function(m){
+      html += '<button type="button" class="etat-tab' + (mode === m[0] ? " active" : "") + '" data-action="etat-mode" data-mode="' + m[0] + '">' + m[1] + '</button>';
+    });
     html += "</div>";
 
     html += '<div class="etat-period-nav">';
-    html += '<button type="button" data-action="etat-precedent" aria-label="Période précédente">‹</button>';
+    html += '<button type="button" data-action="etat-precedent" aria-label="Période précédente"' + (precedentPossible(mode, offset) ? "" : " disabled") + '>‹</button>';
     html += '<div class="etat-period-label">' + labelPeriode(mode, offset) + '</div>';
     html += '<button type="button" data-action="etat-suivant" aria-label="Période suivante"' + (offset >= 0 ? " disabled" : "") + '>›</button>';
     html += "</div>";
 
-    html += '<div class="card">';
-    html += '<div class="etat-grid">';
-    html += '<div class="etat-stat"><div class="num">' + e.nbClients + '</div><div class="label">Clients encaissés</div></div>';
-    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.recetteTotale) + '</div><div class="label">Recette totale</div></div>';
-    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.chargesTotal) + '</div><div class="label">Charges totales</div></div>';
-    html += '<div class="etat-stat"><div class="num ' + (e.soldeNetCumule < 0 ? "perte" : "positif") + '">' + formatFCFA(e.soldeNetCumule) + '</div><div class="label">Solde net cumulé</div></div>';
-    html += "</div>";
-    html += "</div>";
+    var b = bornesPeriode(mode, offset);
+    var startKey = dateToKey(b.debut), endKey = dateToKey(b.fin);
+    var e = calculerPlage(startKey, endKey);
 
-    html += '<div class="section-title">Charges par rubrique</div>';
-    var rubriqueIds = Object.keys(e.chargesParRubrique);
-    if(rubriqueIds.length === 0){
-      html += '<div class="card"><div class="empty-note">Aucune charge sur cette période.</div></div>';
-    }else{
-      rubriqueIds.sort(function(a,b){ return e.chargesParRubrique[b] - e.chargesParRubrique[a]; });
-      html += '<div class="charge-list">';
-      rubriqueIds.forEach(function(rid){
-        var r = findRubrique(rid);
-        var icone = r ? r.icone : "❓";
-        var couleur = r ? r.couleur : "#8a94a6";
-        var nom = r ? r.nom : "Rubrique supprimée";
-        html += '<div class="rubrique-stat-row">' +
-                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
-                  '<span class="rubrique-stat-nom">' + escapeHtml(nom) + '</span>' +
-                  '<span class="rubrique-stat-montant">' + formatFCFA(e.chargesParRubrique[rid]) + '</span>' +
-                "</div>";
-      });
-      html += "</div>";
+    if(mode === "jour"){
+      html += renderResumeJour(startKey, true);
+      return html;
     }
+
+    html += renderResumePeriode(e);
+
+    if(mode === "semaine"){
+      html += '<div class="section-title" style="margin-top:18px;">Jours de la semaine</div>';
+      html += renderListeJours(startKey, endKey);
+    }else{
+      html += '<div class="section-title" style="margin-top:18px;">Semaines du mois</div>';
+      html += renderListeSemaines(b.debut, b.fin);
+    }
+
+    html += renderChargesParRubrique(e);
 
     html += '<div class="section-title" style="margin-top:18px;">Créances</div>';
     html += '<div class="card">';
@@ -1687,6 +2076,182 @@
     html += "</div>";
     html += "</div>";
 
+    return html;
+  }
+
+  function renderResumePeriode(e){
+    var html = '<div class="card">';
+    html += '<div class="etat-grid">';
+    html += '<div class="etat-stat"><div class="num">' + e.nbClients + '</div><div class="label">Clients encaissés</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.recetteTotale) + '</div><div class="label">Recette totale</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.chargesTotal) + '</div><div class="label">Charges totales</div></div>';
+    html += '<div class="etat-stat"><div class="num ' + (e.soldeNetCumule < 0 ? "perte" : "positif") + '">' + formatFCFA(e.soldeNetCumule) + '</div><div class="label">Solde net cumulé</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.ticketMoyen) + '</div><div class="label">Ticket moyen par client</div></div>';
+    html += '<div class="etat-stat"><div class="num">' + formatFCFA(e.moyenneJour) + '</div><div class="label">Solde moyen / jour travaillé (' + e.nbJoursTravailles + ' j)</div></div>';
+    html += "</div>";
+    html += "</div>";
+    return html;
+  }
+
+  function renderChargesParRubrique(e){
+    var html = '<div class="section-title" style="margin-top:18px;">Charges par rubrique</div>';
+    var rubriqueIds = Object.keys(e.chargesParRubrique);
+    if(rubriqueIds.length === 0){
+      return html + '<div class="card"><div class="empty-note">Aucune charge sur cette période.</div></div>';
+    }
+    rubriqueIds.sort(function(a,b){
+      if(a === "cotisation") return -1;
+      if(b === "cotisation") return 1;
+      return e.chargesParRubrique[b] - e.chargesParRubrique[a];
+    });
+    html += '<div class="charge-list">';
+    rubriqueIds.forEach(function(rid){
+      var r = findRubrique(rid);
+      var icone = r ? r.icone : "❓";
+      var couleur = r ? r.couleur : "#8a94a6";
+      var nom = r ? r.nom : "Rubrique supprimée";
+      html += '<div class="rubrique-stat-row">' +
+                '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
+                '<span class="rubrique-stat-nom">' + escapeHtml(nom) + '</span>' +
+                '<span class="rubrique-stat-montant">' + formatFCFA(e.chargesParRubrique[rid]) + '</span>' +
+              "</div>";
+    });
+    html += "</div>";
+    return html;
+  }
+
+  // Liste des jours d'une plage (du plus récent au plus ancien), chacun cliquable vers son détail.
+  function renderListeJours(startKey, endKey){
+    var today = todayKey();
+    var d = parseDateKey(endKey);
+    var debut = parseDateKey(startKey);
+    var html = '<div class="hist-list">';
+    while(d >= debut){
+      var k = dateToKey(d);
+      var j = state.jours[k];
+      var futur = k > today;
+      var aDonnees = !!j && (jourADesDonnees(j) || j.clients.length > 0);
+      var solde = j ? j.recette - totalChargesJour(j) : 0;
+      var sousTitre = futur ? "À venir" : (aDonnees ? j.clients.length + (j.clients.length > 1 ? " clients · " : " client · ") + j.charges.length + (j.charges.length > 1 ? " charges" : " charge") : "Rien d’enregistré");
+      html += '<button type="button" class="hist-row' + (futur ? " futur" : "") + (aDonnees ? "" : " vide") + '"' + (futur ? " disabled" : ' data-action="voir-jour-detail" data-key="' + k + '"') + '>' +
+                '<span>' +
+                  '<span class="hist-date">' + formatDateLabel(k).replace(/ \d{4}$/, "") + (j && j.saisiApresCoup ? '<span class="retro-tag">saisi après coup</span>' : "") + '</span><br>' +
+                  '<span class="hist-sub">' + sousTitre + '</span>' +
+                '</span>' +
+                '<span class="hist-solde ' + (solde < 0 ? "perte" : "positif") + '">' + (aDonnees ? formatFCFA(solde) : "—") + (futur ? "" : '<span class="hist-chevron">›</span>') + '</span>' +
+              '</button>';
+      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1);
+    }
+    html += "</div>";
+    return html;
+  }
+
+  // Semaines civiles (lundi → dimanche) qui recoupent le mois, de la plus récente à la plus ancienne.
+  function renderListeSemaines(debutMois, finMois){
+    var today = todayKey();
+    var lundis = [];
+    var l = lundiDeLaSemaine(debutMois);
+    while(l <= finMois){
+      lundis.push(new Date(l.getTime()));
+      l = new Date(l.getFullYear(), l.getMonth(), l.getDate() + 7);
+    }
+    lundis.reverse();
+    var html = '<div class="hist-list">';
+    lundis.forEach(function(lundi){
+      var dim = new Date(lundi.getFullYear(), lundi.getMonth(), lundi.getDate() + 6);
+      var sk = dateToKey(lundi), ek = dateToKey(dim);
+      var futur = sk > today;
+      var e = calculerPlage(sk, ek);
+      var aDonnees = e.nbJoursTravailles > 0 || e.nbClients > 0;
+      html += '<button type="button" class="hist-row' + (futur ? " futur" : "") + (aDonnees ? "" : " vide") + '"' + (futur ? " disabled" : ' data-action="etat-ouvrir-semaine" data-key="' + sk + '"') + '>' +
+                '<span>' +
+                  '<span class="hist-date">Du ' + formatDateCourte(sk) + ' au ' + formatDateCourte(ek) + '</span><br>' +
+                  '<span class="hist-sub">' + (futur ? "À venir" : (aDonnees ? e.nbClients + (e.nbClients > 1 ? " clients · " : " client · ") + e.nbJoursTravailles + (e.nbJoursTravailles > 1 ? " jours travaillés" : " jour travaillé") : "Rien d’enregistré")) + '</span>' +
+                '</span>' +
+                '<span class="hist-solde ' + (e.soldeNetCumule < 0 ? "perte" : "positif") + '">' + (aDonnees ? formatFCFA(e.soldeNetCumule) : "—") + (futur ? "" : '<span class="hist-chevron">›</span>') + '</span>' +
+              '</button>';
+    });
+    html += "</div>";
+    return html;
+  }
+
+  function renderEtatSemaineDepuisMois(lundiKey){
+    var lundi = parseDateKey(lundiKey);
+    var dim = new Date(lundi.getFullYear(), lundi.getMonth(), lundi.getDate() + 6);
+    var sk = lundiKey, ek = dateToKey(dim);
+    var e = calculerPlage(sk, ek);
+    var html = '<button type="button" class="back-link" data-action="etat-fermer-semaine">‹ Retour aux semaines</button>';
+    html += '<div class="etat-period-label" style="margin-bottom:14px;text-align:left;">Semaine du ' + formatDateCourte(sk) + ' au ' + formatDateCourte(ek) + '</div>';
+    html += renderResumePeriode(e);
+    html += '<div class="section-title" style="margin-top:18px;">Jours de la semaine</div>';
+    html += renderListeJours(sk, ek);
+    html += renderChargesParRubrique(e);
+    return html;
+  }
+
+  // Résumé d'une journée, en lecture seule (vue Jour de Mon état et détail d'un jour).
+  function renderResumeJour(key, avecLienSaisie){
+    var jour = lireJour(key);
+    var totalCharges = totalChargesJour(jour);
+    var solde = jour.recette - totalCharges;
+    var enPerte = solde < 0;
+    var recouvrees = creancesRecouvreesDe(jour);
+    var html = "";
+
+    html += '<div class="card solde-card">';
+    if(enPerte){
+      html += '<div class="solde-label">Ce jour-là</div>';
+      html += '<div class="solde-value perte">Jour à perte : ' + formatFCFA(Math.abs(solde)) + "</div>";
+    }else{
+      html += '<div class="solde-label">Solde net du jour</div>';
+      html += '<div class="solde-value positif">' + formatFCFA(solde) + "</div>";
+    }
+    html += '<div class="stat-row">';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div></div>';
+    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(totalCharges) + '</div><div class="stat-label">Charges (' + jour.charges.length + ")</div></div>";
+    html += "</div>";
+    if(jour.saisiApresCoup){
+      html += '<div class="muted" style="margin-top:10px;">Journée saisie après coup.</div>';
+    }
+    html += "</div>";
+
+    if(avecLienSaisie){
+      html += '<button type="button" class="btn btn-secondary" style="margin-bottom:14px;" data-action="completer-jour" data-key="' + key + '">✏️ Compléter ou corriger ce jour</button>';
+    }
+
+    html += '<div class="section-title">Charges de la journée</div>';
+    if(jour.charges.length === 0){
+      html += '<div class="card"><div class="empty-note">Aucune charge ce jour-là.</div></div>';
+    }else{
+      html += '<div class="charge-list">';
+      trierCharges(jour.charges).forEach(function(c){
+        var r = findRubrique(c.rubriqueId);
+        var icone = r ? r.icone : "❓";
+        var couleur = r ? r.couleur : "#8a94a6";
+        var nom = r ? r.nom : "Rubrique supprimée";
+        html += '<div class="charge-row">' +
+                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
+                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span><br><span class="charge-heure">' + formatHeure(c.ts) + "</span></span>" +
+                  '<span class="charge-montant">-' + formatFCFA(c.montant) + "</span>" +
+                "</div>";
+      });
+      html += "</div>";
+    }
+
+    if(recouvrees.length > 0){
+      var totalRecouvre = recouvrees.reduce(function(s,r){ return s + r.montant; }, 0);
+      html += '<div class="section-title" style="margin-top:18px;">Créances recouvrées ce jour-là (' + formatFCFA(totalRecouvre) + ')</div>';
+      html += '<div class="creance-list">';
+      recouvrees.forEach(function(cr){
+        var creanceOrigine = findCreance(cr.creanceId);
+        var nom = creanceOrigine ? creanceOrigine.nom : "Client";
+        html += '<div class="creance-row payee">' +
+                  '<span class="creance-info"><span class="creance-nom">' + escapeHtml(nom) + '</span></span>' +
+                  '<span class="creance-montant">' + formatFCFA(cr.montant) + '</span>' +
+                '</div>';
+      });
+      html += "</div>";
+    }
     return html;
   }
 
@@ -1855,106 +2420,13 @@
     return html;
   }
 
-  // --- Ecran Historique ---
-
-  function renderHistorique(){
-    var today = todayKey();
-    var cles = Object.keys(state.jours).filter(function(k){ return k !== today; }).sort().reverse();
-
-    var html = "";
-    html += brandHeader("Historique");
-
-    if(cles.length === 0){
-      html += '<div class="card"><div class="empty-note">Pas encore de jour archivé.<br>Vos journées précédentes apparaîtront ici.</div></div>';
-      return html;
-    }
-
-    html += '<div class="hist-list">';
-    cles.forEach(function(k){
-      var j = state.jours[k];
-      var totalCharges = j.charges.reduce(function(s,c){ return s + c.montant; }, 0);
-      var solde = j.recette - totalCharges;
-      html += '<button type="button" class="hist-row" data-action="voir-jour-detail" data-key="' + k + '">' +
-                '<span>' +
-                  '<span class="hist-date">' + formatDateCourte(k) + '</span><br>' +
-                  '<span class="hist-sub">' + j.clients.length + (j.clients.length > 1 ? " clients · " : " client · ") + j.charges.length + (j.charges.length > 1 ? " charges" : " charge") + '</span>' +
-                '</span>' +
-                '<span class="hist-solde ' + (solde < 0 ? "perte" : "positif") + '">' + formatFCFA(solde) + '</span>' +
-              '</button>';
-    });
-    html += "</div>";
-
-    return html;
-  }
+  // --- Détail d'un jour passé (ouvert depuis Mon état) ---
 
   function renderJourDetail(key){
-    var jour = state.jours[key];
-    var html = "";
-    if(!jour){
-      html += brandHeader("Historique");
-      html += '<button type="button" class="back-link" data-action="retour-historique">‹ Retour à l’historique</button>';
-      html += '<div class="card"><div class="empty-note">Ce jour n’existe plus.</div></div>';
-      return html;
-    }
-
-    var totalCharges = jour.charges.reduce(function(s,c){ return s + c.montant; }, 0);
-    var solde = jour.recette - totalCharges;
-    var enPerte = solde < 0;
-    var recouvrees = creancesRecouvreesDe(jour);
-
-    html += brandHeader(formatDateLabel(key));
-    html += '<button type="button" class="back-link" data-action="retour-historique">‹ Retour à l’historique</button>';
+    var html = brandHeader(formatDateLabel(key));
+    html += '<button type="button" class="back-link" data-action="retour-jour-detail">‹ Retour</button>';
     html += '<div class="readonly-tag">Lecture seule</div>';
-
-    html += '<div class="card solde-card">';
-    if(enPerte){
-      html += '<div class="solde-label">Ce jour-là</div>';
-      html += '<div class="solde-value perte">Jour à perte : ' + formatFCFA(Math.abs(solde)) + "</div>";
-    }else{
-      html += '<div class="solde-label">Solde net du jour</div>';
-      html += '<div class="solde-value positif">' + formatFCFA(solde) + "</div>";
-    }
-    html += '<div class="stat-row">';
-    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(jour.recette) + '</div><div class="stat-label">Recette (' + jour.clients.length + (jour.clients.length > 1 ? " clients" : " client") + ')</div></div>';
-    html += '<div class="stat-box"><div class="stat-num">' + formatFCFA(totalCharges) + '</div><div class="stat-label">Charges (' + jour.charges.length + ")</div></div>";
-    html += "</div>";
-    html += "</div>";
-
-    html += '<div class="section-title">Charges de la journée</div>';
-    if(jour.charges.length === 0){
-      html += '<div class="card"><div class="empty-note">Aucune charge ce jour-là.</div></div>';
-    }else{
-      html += '<div class="charge-list">';
-      jour.charges.slice().reverse().forEach(function(c){
-        var r = findRubrique(c.rubriqueId);
-        var icone = r ? r.icone : "❓";
-        var couleur = r ? r.couleur : "#8a94a6";
-        var nom = r ? r.nom : "Rubrique supprimée";
-        var heure = formatHeure(c.ts);
-        html += '<div class="charge-row">' +
-                  '<span class="charge-icon" style="background:' + couleur + '22;color:' + couleur + ';">' + icone + "</span>" +
-                  '<span class="charge-info"><span class="charge-nom">' + escapeHtml(nom) + '</span><br><span class="charge-heure">' + heure + "</span></span>" +
-                  '<span class="charge-montant">-' + formatFCFA(c.montant) + "</span>" +
-                "</div>";
-      });
-      html += "</div>";
-    }
-
-    if(recouvrees.length > 0){
-      var totalRecouvre = recouvrees.reduce(function(s,r){ return s + r.montant; }, 0);
-      html += '<div class="section-title" style="margin-top:18px;">Créances recouvrées ce jour-là (' + formatFCFA(totalRecouvre) + ')</div>';
-      html += '<div class="creance-list">';
-      recouvrees.forEach(function(cr){
-        var creanceOrigine = findCreance(cr.creanceId);
-        var nom = creanceOrigine ? creanceOrigine.nom : "Client";
-        html += '<div class="creance-row payee">' +
-                  '<span class="creance-info"><span class="creance-nom">' + escapeHtml(nom) + '</span></span>' +
-                  '<span class="creance-montant">' + formatFCFA(cr.montant) + '</span>' +
-                '</div>';
-      });
-      html += "</div>";
-    }
-
+    html += renderResumeJour(key, true);
     return html;
   }
 
@@ -1991,6 +2463,10 @@
                 "</div>" +
               "</div>";
       html += '<button type="button" class="btn btn-secondary" style="margin-top:10px;" data-action="reglages-enregistrer-cotisation">Enregistrer le montant</button>';
+      html += '<div class="settings-row" style="margin-top:8px;">' +
+                '<div class="settings-row-txt"><div class="settings-row-label">Cotisation automatique</div><div class="settings-row-val">Ajoutée toute seule au premier client de chaque journée. Toujours modifiable ou supprimable.</div></div>' +
+                '<button type="button" class="switch' + (state.config.cotisationAuto ? " on" : "") + '" data-action="reglages-toggle-cotisation-auto" aria-label="Cotisation automatique"></button>' +
+              '</div>';
     }
     html += "</div>";
 
@@ -2040,6 +2516,18 @@
     }
     html += "</div>";
 
+    // Installation (V1.1)
+    html += '<div class="settings-section-title">Application sur l’écran d’accueil</div>';
+    html += '<div class="card">';
+    if(estInstallee()){
+      html += '<div class="settings-row"><div class="settings-row-txt"><div class="settings-row-label">Application installée</div><div class="settings-row-val">Salon H s’ouvre depuis son icône, plein écran, même sans connexion.</div></div><span class="settings-pill on">✓</span></div>';
+    }else{
+      html += '<div class="muted">Ajoutez Salon H sur l’écran d’accueil : une icône comme une vraie application, plein écran, qui fonctionne sans connexion.</div>';
+      html += '<button type="button" class="btn btn-primary" style="margin-top:12px;" data-action="installer-app">📲 Installer l’application</button>';
+      html += '<button type="button" class="btn btn-ghost" style="margin-top:4px;" data-action="installer-aide">Comment faire, pas à pas ?</button>';
+    }
+    html += "</div>";
+
     // Sauvegarde et restauration
     html += '<div class="settings-section-title">Sauvegarde et restauration</div>';
     html += '<div class="card">';
@@ -2069,7 +2557,7 @@
   }
 
   function renderSauvegardeSection(){
-    var html = '<div class="muted">Vos données restent uniquement sur ce téléphone. Si vous changez d’appareil ou effacez les données de Chrome, elles sont perdues — sauf si vous avez une sauvegarde.</div>';
+    var html = '<div class="muted">Vos données restent uniquement sur ce téléphone. Si vous changez d’appareil ou effacez les données de Chrome, elles sont perdues — sauf si vous avez une sauvegarde. Selon votre téléphone, vous pourrez choisir le dossier où l’enregistrer.</div>';
 
     html += '<div class="backup-info">';
     if(state.meta.derniereSauvegarde){
@@ -2116,7 +2604,7 @@
 
     if(ui.partagerMode !== "jour"){
       html += '<div class="etat-period-nav">';
-      html += '<button type="button" data-action="partager-precedent" aria-label="Période précédente">‹</button>';
+      html += '<button type="button" data-action="partager-precedent" aria-label="Période précédente"' + (precedentPossible(ui.partagerMode, ui.partagerOffset) ? "" : " disabled") + '>‹</button>';
       html += '<div class="etat-period-label">' + labelPeriode(ui.partagerMode, ui.partagerOffset) + '</div>';
       html += '<button type="button" data-action="partager-suivant" aria-label="Période suivante"' + (ui.partagerOffset >= 0 ? " disabled" : "") + '>›</button>';
       html += "</div>";
@@ -2245,7 +2733,7 @@
     ctx.font = "800 42px -apple-system,Helvetica,Arial,sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("S", marge + 39, y + 41);
+    ctx.fillText("H", marge + 39, y + 41);
 
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
@@ -2304,7 +2792,9 @@
     ctx.fillStyle = "#6b7385";
     ctx.font = "400 22px -apple-system,Helvetica,Arial,sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("Généré le " + formatDateCourte(todayKey()) + " avec MonDjai/Salon H", w/2, h - 54);
+    ctx.fillText("Généré le " + formatDateCourte(todayKey()) + " avec MonDjai/Salon H", w/2, h - 66);
+    ctx.font = "400 19px -apple-system,Helvetica,Arial,sans-serif";
+    ctx.fillText("Document informatif, non certifié", w/2, h - 34);
   }
 
   function genererEtPartagerImage(){
@@ -2344,12 +2834,12 @@
     html += brandHeader("À propos");
     html += '<button type="button" class="back-link" data-action="retour-reglages">‹ Retour aux réglages</button>';
     html += '<div class="card">';
-    html += '<div class="about-mark">S</div>';
+    html += '<div class="about-mark">H</div>';
     html += '<div class="about-mission">MonDjai/Salon H aide chaque coiffeur à connaître sa recette, ses charges et ce qu’il lui reste vraiment — en quelques secondes, entre deux clients.</div>';
     html += '<div class="about-tagline">« Chaque coupe compte. »</div>';
     html += '<div class="muted" style="text-align:center;">Vos données restent sur ce téléphone. L’application fonctionne entièrement sans connexion internet.</div>';
     html += "</div>";
-    html += '<div class="card"><div class="muted">MonDjai/Salon H · Version 1.0</div></div>';
+    html += '<div class="card"><div class="muted">MonDjai/Salon H · Version ' + VERSION_APP + ' (Sprint 5 — mise à niveau famille MonDjai)</div></div>';
     return html;
   }
 
@@ -2361,7 +2851,92 @@
     if(ui.modal === "charge-montant") return renderModalChargeMontant();
     if(ui.modal === "charge-edit") return renderModalChargeEdit();
     if(ui.modal === "creance-ajout") return renderModalCreanceAjout();
+    if(ui.modal === "clients-jour") return renderModalClientsJour();
+    if(ui.modal === "client-edit") return renderModalClientEdit();
+    if(ui.modal === "installer-aide") return renderModalInstallerAide();
     return "";
+  }
+
+  // V1.1 : liste des clients du jour, pour corriger un montant ou retirer un client tapé par erreur.
+  function renderModalClientsJour(){
+    var key = jourSaisieKey();
+    var jour = lireJour(key);
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Clients ' + (key === todayKey() ? "du jour" : "du " + formatDateCourte(key)) + ' · ' + formatFCFA(jour.recette) + '</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    if(jour.clients.length === 0){
+      html += '<div class="empty-note">Aucun client encaissé pour l’instant.</div>';
+    }else{
+      html += '<div class="charge-list">';
+      jour.clients.slice().reverse().forEach(function(c, i){
+        var num = jour.clients.length - i;
+        var ref = c.id || ("idx_" + (num - 1));
+        html += '<button type="button" class="client-row" data-action="editer-client" data-id="' + ref + '">' +
+                  '<span class="client-num">' + num + '</span>' +
+                  '<span class="client-info">Client n°' + num + ' · ' + formatHeure(c.ts) + '</span>' +
+                  '<span class="client-montant">' + formatFCFA(c.montant) + '</span>' +
+                '</button>';
+      });
+      html += '</div>';
+      html += '<div class="muted" style="margin-top:8px;">Touchez un client pour corriger le montant ou le retirer.</div>';
+    }
+    var recouvrees = creancesRecouvreesDe(jour);
+    if(recouvrees.length){
+      var tot = recouvrees.reduce(function(s,r){ return s + r.montant; }, 0);
+      html += '<div class="muted" style="margin-top:12px;">+ ' + formatFCFA(tot) + ' de créances recouvrées ce jour-là (déjà comptées dans la recette).</div>';
+    }
+    html += "</div></div>";
+    return html;
+  }
+
+  function trouverClient(jour, ref){
+    if(!ref) return -1;
+    for(var i=0;i<jour.clients.length;i++){
+      if(jour.clients[i].id === ref) return i;
+    }
+    if(ref.indexOf("idx_") === 0){
+      var n = parseInt(ref.slice(4), 10);
+      if(n >= 0 && n < jour.clients.length && !jour.clients[n].id) return n;
+    }
+    return -1;
+  }
+
+  function renderModalClientEdit(){
+    var jour = lireJour(jourSaisieKey());
+    var idx = trouverClient(jour, ui.clientEditId);
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Modifier le client n°' + (idx + 1) + '</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    if(idx < 0){
+      return html + '<div class="empty-note">Ce client n’existe plus.</div></div></div>';
+    }
+    html += '<button type="button" class="back-link" data-action="retour-clients-jour">‹ Tous les clients</button>';
+    var montant = parseMontant(ui.clientEditMontant);
+    html += '<div class="field" style="margin-top:0;">' +
+              '<label>Montant du service</label>' +
+              '<div class="amount-field">' +
+                '<input type="tel" inputmode="numeric" id="input-client-edit-montant" value="' + escapeHtml(ui.clientEditMontant) + '">' +
+                '<span class="amount-suffix">F</span>' +
+              "</div>" +
+            "</div>";
+    html += '<div class="btn-row">';
+    html += '<button type="button" class="btn btn-danger-outline" data-action="supprimer-client">Retirer ce client</button>';
+    html += '<button type="button" class="btn btn-primary" data-action="valider-modif-client"' + (montant > 0 ? "" : " disabled") + '>Enregistrer</button>';
+    html += "</div>";
+    html += "</div></div>";
+    return html;
+  }
+
+  function renderModalInstallerAide(){
+    var html = '<div class="overlay" data-action="fermer-modal-backdrop"><div class="sheet" data-stop="1">';
+    html += '<div class="sheet-head"><div class="sheet-title">Installer Salon H sur l’écran d’accueil</div><button type="button" class="sheet-close" data-action="fermer-modal">✕</button></div>';
+    html += '<div class="muted">Une seule fois, en 3 gestes. Ensuite l’icône « Salon H » s’ouvre comme une application, plein écran, même sans connexion.</div>';
+    html += '<div class="install-os">Android (Chrome)</div>';
+    html += '<ol class="install-steps"><li>Ouvrez l’adresse de Salon H dans <strong>Chrome</strong>.</li><li>Touchez le menu <strong>⋮</strong> en haut à droite.</li><li>Choisissez <strong>« Installer l’application »</strong> (ou « Ajouter à l’écran d’accueil »), puis <strong>Installer</strong>.</li></ol>';
+    html += '<div class="install-os">iPhone (Safari)</div>';
+    html += '<ol class="install-steps"><li>Ouvrez l’adresse dans <strong>Safari</strong>.</li><li>Touchez le bouton <strong>Partager</strong> (carré avec une flèche).</li><li>Choisissez <strong>« Sur l’écran d’accueil »</strong>, puis <strong>Ajouter</strong>.</li></ol>';
+    html += '<div class="soft-msg">Vos données restent dans ce navigateur : installez l’application depuis le même navigateur que celui que vous utilisez déjà, pour retrouver vos journées.</div>';
+    html += '<button type="button" class="btn btn-primary" style="margin-top:14px;" data-action="fermer-modal">J’ai compris</button>';
+    html += "</div></div>";
+    return html;
   }
 
   function renderModalClient(){
@@ -2375,6 +2950,14 @@
                 '<span class="amount-suffix">F</span>' +
               "</div>" +
             "</div>";
+    var rapides = montantsRapides();
+    if(rapides.length){
+      html += '<div class="quick-row" style="margin:12px 0 0 0;">';
+      rapides.forEach(function(m){
+        html += '<button type="button" class="quick-chip" data-action="client-rapide" data-montant="' + m + '">' + formatFCFA(m) + '</button>';
+      });
+      html += '</div>';
+    }
     html += '<button type="button" class="btn btn-primary" style="margin-top:16px;" data-action="valider-client"' + (montant > 0 ? "" : " disabled") + '>Ajouter à la recette</button>';
     html += "</div></div>";
     return html;
@@ -2545,6 +3128,19 @@
       }else if(t.id === "input-reglages-cotisation"){
         ui.reglagesCotisationSaisie = t.value;
         renderKeepFocus(t);
+      }else if(t.id === "input-client-edit-montant"){
+        ui.clientEditMontant = t.value;
+        renderKeepFocus(t);
+      }else if(t.id === "input-code-acces"){
+        ui.codeSaisie = t.value;
+        ui.codeErreur = false;
+        renderKeepFocus(t);
+      }
+    };
+
+    app.onkeydown = function(e){
+      if(e.target && e.target.id === "input-code-acces" && e.key === "Enter"){
+        handleAction("valider-code-acces", e.target);
       }
     };
 
@@ -2552,6 +3148,11 @@
       var t = e.target;
       if(t.id === "input-restauration" && t.files && t.files[0]){
         lireFichierRestauration(t.files[0]);
+      }else if(t.id === "input-jour-saisie"){
+        var v = t.value;
+        if(v && v < todayKey()){ ui.jourSelection = v; }
+        else { ui.jourSelection = null; }
+        render();
       }
     };
   }
@@ -2716,13 +3317,115 @@
       case "valider-client":
         if(el.hasAttribute("disabled")) return;
         var montantClient = parseMontant(ui.clientMontant);
+        ui.modal = null;
         if(montantClient > 0){
-          var jourC = ensureJour();
-          jourC.clients.push({ montant: montantClient, ts: Date.now() });
-          jourC.recette += montantClient;
+          var cotisAuto = ajouterClient(montantClient);
+          afficherToast("Client ajouté : " + formatFCFA(montantClient) + (cotisAuto ? " · cotisation du jour ajoutée" : ""));
+        }else{
+          render();
+        }
+        break;
+
+      case "client-rapide":
+        var montantRapide = parseInt(el.getAttribute("data-montant"), 10);
+        ui.modal = null;
+        if(montantRapide > 0){
+          var cotisAutoR = ajouterClient(montantRapide);
+          afficherToast("Client ajouté : " + formatFCFA(montantRapide) + (cotisAutoR ? " · cotisation du jour ajoutée" : ""));
+        }
+        break;
+
+      case "ouvrir-clients-jour":
+        ui.modal = "clients-jour";
+        render();
+        break;
+
+      case "editer-client":
+        ui.clientEditId = el.getAttribute("data-id");
+        var jourEdC = lireJour(jourSaisieKey());
+        var idxEdC = trouverClient(jourEdC, ui.clientEditId);
+        ui.clientEditMontant = idxEdC >= 0 ? String(jourEdC.clients[idxEdC].montant) : "";
+        ui.modal = "client-edit";
+        render();
+        break;
+
+      case "retour-clients-jour":
+        ui.modal = "clients-jour";
+        render();
+        break;
+
+      case "valider-modif-client":
+        if(el.hasAttribute("disabled")) return;
+        var jourVC = ensureJour();
+        var idxVC = trouverClient(jourVC, ui.clientEditId);
+        var nvMontantClient = parseMontant(ui.clientEditMontant);
+        if(idxVC >= 0 && nvMontantClient > 0){
+          jourVC.clients[idxVC].montant = nvMontantClient;
+          recalculerRecette(jourVC);
           saveState();
         }
+        ui.modal = "clients-jour";
+        ui.clientEditId = null;
+        render();
+        break;
+
+      case "supprimer-client":
+        var jourSCl = ensureJour();
+        var idxSCl = trouverClient(jourSCl, ui.clientEditId);
+        if(idxSCl >= 0){
+          jourSCl.clients.splice(idxSCl, 1);
+          recalculerRecette(jourSCl);
+          saveState();
+        }
+        ui.modal = "clients-jour";
+        ui.clientEditId = null;
+        afficherToast("Client retiré de la recette.");
+        break;
+
+      case "revenir-aujourdhui":
+        ui.jourSelection = null;
+        render();
+        break;
+
+      case "completer-jour":
+        var cleCompleter = el.getAttribute("data-key");
+        ui.jourSelection = (cleCompleter && cleCompleter < todayKey()) ? cleCompleter : null;
+        ui.page = "jour";
+        ui.historiqueSelection = null;
         ui.modal = null;
+        render();
+        break;
+
+      case "valider-code-acces":
+        if(normaliserCode(ui.codeSaisie) === CODE_ACCES){
+          state.config.codeAccesOk = true;
+          saveState();
+          ui.codeSaisie = "";
+          ui.codeErreur = false;
+        }else{
+          ui.codeErreur = true;
+        }
+        render();
+        break;
+
+      case "installer-app":
+        lancerInstallation();
+        break;
+
+      case "installer-aide":
+        ui.modal = "installer-aide";
+        render();
+        break;
+
+      case "installer-plus-tard":
+        state.meta.installCarteMasquee = true;
+        saveState();
+        afficherToast("D’accord. Vous pourrez l’installer depuis ⚙️ Réglages.");
+        break;
+
+      case "reglages-toggle-cotisation-auto":
+        state.config.cotisationAuto = !state.config.cotisationAuto;
+        saveState();
         render();
         break;
 
@@ -2756,29 +3459,44 @@
 
       case "voir-jour-detail":
         ui.historiqueSelection = el.getAttribute("data-key");
+        ui.jourDetailRetour = "etat";
         ui.page = "jour-detail";
         render();
         break;
 
-      case "retour-historique":
+      case "retour-jour-detail":
         ui.historiqueSelection = null;
-        ui.page = "historique";
+        ui.page = ui.jourDetailRetour || "etat";
         render();
         break;
 
       case "etat-mode":
         ui.etatMode = el.getAttribute("data-mode");
         ui.etatOffset = 0;
+        ui.etatSemaineOuverte = null;
         render();
         break;
 
       case "etat-precedent":
-        ui.etatOffset -= 1;
+        if(el.hasAttribute("disabled")) return;
+        if(precedentPossible(ui.etatMode, ui.etatOffset)) ui.etatOffset -= 1;
+        ui.etatSemaineOuverte = null;
+        render();
+        break;
+
+      case "etat-ouvrir-semaine":
+        ui.etatSemaineOuverte = el.getAttribute("data-key");
+        render();
+        break;
+
+      case "etat-fermer-semaine":
+        ui.etatSemaineOuverte = null;
         render();
         break;
 
       case "etat-suivant":
         if(el.hasAttribute("disabled")) return;
+        ui.etatSemaineOuverte = null;
         if(ui.etatOffset < 0){
           ui.etatOffset += 1;
         }
@@ -2855,7 +3573,7 @@
           creanceAPayer.statut = "payee";
           creanceAPayer.datePaiement = todayKey();
           creanceAPayer.tsPaiement = Date.now();
-          var jourMP = ensureJour();
+          var jourMP = ensureJour(todayKey());
           jourMP.creancesRecouvrees = jourMP.creancesRecouvrees || [];
           jourMP.creancesRecouvrees.push({ creanceId: creanceAPayer.id, montant: creanceAPayer.montant, ts: Date.now() });
           jourMP.recette += creanceAPayer.montant;
@@ -3154,7 +3872,8 @@
         break;
 
       case "partager-precedent":
-        ui.partagerOffset -= 1;
+        if(el.hasAttribute("disabled")) return;
+        if(precedentPossible(ui.partagerMode, ui.partagerOffset)) ui.partagerOffset -= 1;
         render();
         break;
 
@@ -3173,7 +3892,7 @@
       // --- Mes données : sauvegarde et restauration (F10) ---
 
       case "sauvegarder-donnees":
-        telechargerSauvegarde();
+        sauvegarderAvecChoixDossier();
         render();
         break;
 
@@ -3193,6 +3912,11 @@
         if(ui.restaurationFichier){
           var nouvelEtat = stateDepuisImport(ui.restaurationFichier);
           if(nouvelEtat){
+            // Le code d'accès déjà validé sur ce téléphone n'est jamais redemandé après une restauration.
+            if(state.config.codeAccesOk) nouvelEtat.config.codeAccesOk = true;
+            if(!nouvelEtat.meta.creation) nouvelEtat.meta.creation = state.meta.creation;
+            ui.jourSelection = null;
+            ui.etatSemaineOuverte = null;
             state = nouvelEtat;
             saveState();
             ui.restaurationFichier = null;
@@ -3247,7 +3971,7 @@
 
   if("serviceWorker" in navigator){
     window.addEventListener("load", function(){
-      navigator.serviceWorker.register("sw.js").catch(function(){});
+      navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(function(){});
     });
   }
 })();
