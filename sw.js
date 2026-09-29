@@ -5,7 +5,7 @@
      toute seule sur les téléphones connectés, sans vider le cache à la main.
    - À chaque livraison qui modifie un fichier autre que index.html, incrémenter VERSION ci-dessous.
    - Aucun appel vers un service tiers : seuls les fichiers de l'application elle-même sont concernés. */
-var VERSION = "salonh-v1.1-2026-09-29";
+var VERSION = "salonh-v1.2-2026-09-29";
 var FICHIERS = [
   "./",
   "./index.html",

@@ -2,7 +2,7 @@
   "id": "./",
   "name": "MonDjai/Salon H",
   "short_name": "Salon H",
-  "description": "Le carnet de recettes et de charges du coiffeur, en quelques secondes entre deux clients.",
+  "description": "Le carnet de recettes, de charges et d’épargne du coiffeur, en quelques secondes.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./",
